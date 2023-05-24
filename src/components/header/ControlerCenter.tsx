@@ -6,6 +6,8 @@ import BluetoothItem from "./BluetoothItem";
 import FullScreenItem from "./FullScreenItem";
 import ThemeMode from "./ThemeMode";
 import ProtectMode from "./ProtectMode";
+import LightSlider from "./LightSlider";
+import SoundSlider from "./SoundSlider";
 interface IProps {
   dark: boolean;
   brightness: number;
@@ -54,6 +56,15 @@ const ControlerCenter = ({
             setBrightness={setBrightness}
           />
         </div>
+      </div>
+      {/* 调整亮度和音量 */}
+      <div
+        className={`flex flex-col justify-center rounded-[13px] border shadow h-36 ${bg} mt-4`}
+      >
+        {/* 调整亮度滚动条 */}
+        <LightSlider light={brightness} setLight={setBrightness} />
+        {/* 调整音量滚动条 */}
+        <SoundSlider sound={sound} setSound={setSound} />
       </div>
     </div>
   );
