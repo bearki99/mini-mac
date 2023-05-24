@@ -47,7 +47,9 @@ const Header: React.FC<IProps> = () => {
   const wifiRef = useRef<HTMLDivElement>(null);
   const controlRef = useRef<HTMLDivElement>(null);
   useClickAway(() => wifiMenuSwitch(false), wifiRef);
-  useClickAway(() => controlCenterSwitch(false), controlRef);
+  useClickAway(() => {
+    controlCenterSwitch(false);
+  }, controlRef);
   return (
     <>
       <div
@@ -65,6 +67,7 @@ const Header: React.FC<IProps> = () => {
               height: "100%",
               backgroundPosition: "center center",
               backgroundSize: "100% 100%",
+              
             }}
           />
         </div>
@@ -99,23 +102,27 @@ const Header: React.FC<IProps> = () => {
           {/* 电池模块 */}
           <Battery dark={dark} />
           {/* 控制面板模块 */}
-          <div className="relative" ref={controlRef}>
-            <HeaderItem
-              clickHandler={controlCenterSwitch}
-              value={showControlCenter}
-              Icon={<ArrowLeftRight size={16} color={dark ? "#fff" : "#000"} />}
-            />
-            {showControlCenter && (
-              <ControlerCenter
-                dark={dark}
-                setDark={setDark}
-                brightness={brightness}
-                setBrightness={setBrightness}
-                sound={sound}
-                setSound={setSound}
-                controlCenterSwitch={controlCenterSwitch}
+          <div className="relative" >
+            <div ref={controlRef}>
+              <HeaderItem
+                clickHandler={controlCenterSwitch}
+                value={showControlCenter}
+                Icon={
+                  <ArrowLeftRight size={16} color={dark ? "#fff" : "#000"} />
+                }
               />
-            )}
+              {showControlCenter && (
+                <ControlerCenter
+                  dark={dark}
+                  setDark={setDark}
+                  brightness={brightness}
+                  setBrightness={setBrightness}
+                  sound={sound}
+                  setSound={setSound}
+                  controlCenterSwitch={controlCenterSwitch}
+                />
+              )}
+            </div>
           </div>
           {/* 日期显示模块 */}
           <CurrentTime dark={dark} />

@@ -4,6 +4,8 @@ import WifiItem from "./WifiItem";
 import { Bluetooth, Expand } from "lucide-react";
 import BluetoothItem from "./BluetoothItem";
 import FullScreenItem from "./FullScreenItem";
+import ThemeMode from "./ThemeMode";
+import ProtectMode from "./ProtectMode";
 interface IProps {
   dark: boolean;
   brightness: number;
@@ -33,7 +35,7 @@ const ControlerCenter = ({
     >
       <div className="flex w-full ">
         <div
-          className={`flex flex-col mr-3 rounded-[13px] border  shadow w-40 h-36 ${bg}`}
+          className={`flex flex-col mr-3 rounded-[13px] border shadow w-40 h-36 ${bg}`}
         >
           {/* Wifi/蓝牙/切换全屏 */}
           <WifiItem />
@@ -43,13 +45,14 @@ const ControlerCenter = ({
 
         <div className="flex flex-col w-40 h-3 space-y-3 shadow">
           {/* Change Mode */}
-          {/* <ThemeMode bg={bg} dark={dark} setDark={setDark} />
-          <EyeMode
+          <ThemeMode bg={bg} dark={dark} setDark={setDark} />
+          <ProtectMode
             bg={bg}
             dark={dark}
+            setDark={setDark}
             brightness={brightness}
             setBrightness={setBrightness}
-          /> */}
+          />
         </div>
       </div>
     </div>
