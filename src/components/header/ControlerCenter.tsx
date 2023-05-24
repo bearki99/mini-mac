@@ -1,5 +1,9 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { memo } from "react";
+import WifiItem from "./WifiItem";
+import { Bluetooth, Expand } from "lucide-react";
+import BluetoothItem from "./BluetoothItem";
+import FullScreenItem from "./FullScreenItem";
 interface IProps {
   dark: boolean;
   brightness: number;
@@ -20,6 +24,7 @@ const ControlerCenter = ({
   controlCenterSwitch,
 }: IProps) => {
   const bg = dark ? "bg-[#2d3440]/90 border-gray-500" : "bg-white/50";
+
   return (
     <div
       className={`absolute p-3 select-none rounded-[13px] w-80 h-76 top-7 -left-64 flex flex-col shadow ${
@@ -30,9 +35,10 @@ const ControlerCenter = ({
         <div
           className={`flex flex-col mr-3 rounded-[13px] border  shadow w-40 h-36 ${bg}`}
         >
-          {/* <WifiItem />
+          {/* Wifi/蓝牙/切换全屏 */}
+          <WifiItem />
           <BluetoothItem title="Bluetooth" Icon={Bluetooth} />
-          <FullScreenItem title="FullScreen" Icon={Expand} /> */}
+          <FullScreenItem title="FullScreen" Icon={Expand} />
         </div>
 
         <div className="flex flex-col w-40 h-3 space-y-3 shadow">

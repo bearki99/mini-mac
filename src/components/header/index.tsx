@@ -9,6 +9,7 @@ import HeaderItem from "./HeaderItem";
 import WifiMenu from "./wifiMenu";
 import Battery from "./Battery";
 import ControlerCenter from "./ControlerCenter";
+import CurrentTime from "./currentTime";
 interface IProps {
   children?: ReactNode;
 }
@@ -44,7 +45,9 @@ const Header: React.FC<IProps> = () => {
   ]);
   const backgroundImage = dark ? `url(${whiteApple})` : `url(${blackApple})`;
   const wifiRef = useRef<HTMLDivElement>(null);
+  const controlRef = useRef<HTMLDivElement>(null);
   useClickAway(() => wifiMenuSwitch(false), wifiRef);
+  useClickAway(() => controlCenterSwitch(false), controlRef);
   return (
     <>
       <div
@@ -61,14 +64,14 @@ const Header: React.FC<IProps> = () => {
               width: "90%",
               height: "100%",
               backgroundPosition: "center center",
-              backgroundSize: "contain",
+              backgroundSize: "100% 100%",
             }}
           />
         </div>
         {/* flex empty block */}
         <div className="flex-1"></div>
         {/* right */}
-        <div className="flex items-center justify-end h-full space-x-2 mr-10">
+        <div className="flex items-center justify-end h-full space-x-2">
           {/* wifi模块 */}
           <div className="relative" ref={wifiRef}>
             {wifi ? (
@@ -96,7 +99,7 @@ const Header: React.FC<IProps> = () => {
           {/* 电池模块 */}
           <Battery dark={dark} />
           {/* 控制面板模块 */}
-          <div className="relative">
+          <div className="relative" ref={controlRef}>
             <HeaderItem
               clickHandler={controlCenterSwitch}
               value={showControlCenter}
@@ -114,6 +117,8 @@ const Header: React.FC<IProps> = () => {
               />
             )}
           </div>
+          {/* 日期显示模块 */}
+          <CurrentTime dark={dark} />
         </div>
       </div>
     </>
