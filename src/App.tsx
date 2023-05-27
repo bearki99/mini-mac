@@ -4,6 +4,7 @@ import Footer from "./components/footer";
 import githubImage from "./public/img/ui/github.jpg";
 import { useThemeStore } from "./store";
 import GlobalGround from "./components/globalGround";
+import Page from "./components/page";
 
 function App() {
   const [brightness] = useThemeStore((state) => [state.brightness]);
@@ -19,6 +20,7 @@ function App() {
         }}
       >
         <Header></Header>
+        <Page />
         <Footer />
       </div>
     </GlobalGround>
