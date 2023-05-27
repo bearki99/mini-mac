@@ -3,6 +3,10 @@
 @tailwind utilities;
 
 @layer components {
+  .hover:bg-primary {
+    
+  }
+
   .flex-center {
     @apply flex justify-center items-center;
   }
