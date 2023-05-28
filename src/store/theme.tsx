@@ -13,7 +13,7 @@ interface themeState {
 
 const useThemeStore = create<themeState>((set) => ({
   dark: false,
-  brightness: 50,
+  brightness: 70,
   sound: 80,
   color: "#5388fc",
   setDark: (value) => set(() => ({ dark: value })),

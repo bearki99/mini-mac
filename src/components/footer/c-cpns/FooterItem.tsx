@@ -19,7 +19,7 @@ const FooterItem: React.FC<IProps> = (props) => {
   const { app, mouseX, openApp, dockSize, dockMag, isOpen } = props;
   const imgRef = useRef<HTMLImageElement>(null);
   const { width } = useDockHoverAnimation(mouseX, imgRef, dockSize, dockMag);
-  const bannedApp = ["github", "email"];
+  const bannedApp: string[] = [];
   const show = useLaunchpadStore((s) => s.show);
   const setShow = useLaunchpadStore((s) => s.setShow);
   const removeMinimizeApps = useAppsStore((s) => s.removeMinimizeApps);
@@ -31,7 +31,7 @@ const FooterItem: React.FC<IProps> = (props) => {
   const dockItemClick = () => {
     if (app.id === "launchpad") {
       setShow(!show);
-    } else if (!bannedApp.includes(app.id)) {
+    } else if (!bannedApp.includes(app.id) && app.id !== 'github' && app.id !== 'email') {
       const isMinimize = miniMizeApps.includes(app.id);
       if (isMinimize) {
         removeMinimizeApps(app.id);
@@ -41,7 +41,7 @@ const FooterItem: React.FC<IProps> = (props) => {
       else openApp(app.id);
     } else if (app.id === "email") {
       // eslint-disable-next-line react-hooks/rules-of-hooks
-      useAlert("info", "个人邮箱: xyyang0505@mail.ustc.edu.cn", 6000);
+      useAlert("info", "个人邮箱: xyyang0505@mail.ustc.edu.cn", 3000);
     }
   };
   useEffect(() => {
