@@ -59,11 +59,10 @@ const Header: React.FC<IProps> = () => {
           <div
             style={{
               backgroundImage: backgroundImage,
-              width: "90%",
-              height: "100%",
+              width: "70%",
+              height: "70%",
               backgroundPosition: "center center",
               backgroundSize: "100% 100%",
-              
             }}
           />
         </div>
@@ -98,7 +97,7 @@ const Header: React.FC<IProps> = () => {
           {/* 电池模块 */}
           <Battery dark={dark} />
           {/* 控制面板模块 */}
-          <div className="relative" >
+          <div className="relative">
             <div ref={controlRef}>
               <HeaderItem
                 clickHandler={controlCenterSwitch}
