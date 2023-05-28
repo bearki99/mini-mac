@@ -104,7 +104,7 @@ const Window: React.FC<IProps> = (props) => {
       }}
       onClick={() => setFocus(app.id)}
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      exit={{ type: "spring"}}
+      exit={{ opacity: 0, dur: 2000 }}
     >
       <motion.header
         className="absolute z-10 flex w-full bg-transparent h-7 window-header rounded-t-xl"
