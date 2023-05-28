@@ -12,7 +12,7 @@ const AlertMessage = () => {
     setTimeout(() => {
       setShow(false)
     }, duration)
-  }, [show])
+  }, [show, duration, setShow])
   const render = () => {
     switch (type) {
       case 'success':

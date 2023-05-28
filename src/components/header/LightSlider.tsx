@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React from "react";
 import { Sun } from "lucide-react";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";

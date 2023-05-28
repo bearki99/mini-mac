@@ -37,7 +37,7 @@ const GlobalGround: React.FC<IProps> = ({
     return () => {
       desktop.removeEventListener("contextmenu", contextMenu);
     };
-  }, []);
+  }, [useAlert]);
   return (
     <div
       className="relative flex flex-col w-full h-full overflow-hidden bg-center bg-cover"

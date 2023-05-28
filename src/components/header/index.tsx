@@ -29,8 +29,6 @@ const Header: React.FC<IProps> = () => {
     wifiSwitch,
     showWifiMenu,
     wifiMenuSwitch,
-    showAppleMenu,
-    appleMenuSwitch,
     showControlCenter,
     controlCenterSwitch,
   ] = useControlStore((state) => [
@@ -38,8 +36,6 @@ const Header: React.FC<IProps> = () => {
     state.wifiSwitch,
     state.showWifiMenu,
     state.wifiMenuSwitch,
-    state.showAppleMenu,
-    state.appleMenuSwitch,
     state.showControlCenter,
     state.controlCenterSwitch,
   ]);

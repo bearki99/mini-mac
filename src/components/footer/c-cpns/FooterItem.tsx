@@ -1,11 +1,10 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState} from "react";
 import { memo } from "react";
 import type { MotionValue } from "framer-motion";
 import { motion } from "framer-motion";
 import type { AppsData } from "@/lib/type";
 import useDockHoverAnimation from "@/hooks/useDockHoverAnimation";
 import { useAlertStore, useLaunchpadStore, useAppsStore } from "@/store";
-import vscodeIcon from "@/public/img/icons/vscode.png";
 interface IProps {
   app: AppsData;
   mouseX: MotionValue;
@@ -26,7 +25,7 @@ const FooterItem: React.FC<IProps> = (props) => {
   const removeMinimizeApps = useAppsStore((s) => s.removeMinimizeApps);
   const miniMizeApps = useAppsStore((s) => s.minimizeApps);
   const useAlert = useAlertStore((s) => s.useAlert);
-  let id: string;
+  const [id, setID] = useState('');
   
 
   const dockItemClick = () => {
@@ -46,7 +45,7 @@ const FooterItem: React.FC<IProps> = (props) => {
     }
   };
   useEffect(() => {
-    id = { ...JSON.parse(localStorage.getItem("userInfo") as string) }.id;
+    setID({ ...JSON.parse(localStorage.getItem("userInfo") as string) }.id);
   }, []);
 //   const url = "@" + app.img;
 //   const vscodeIcon = import(url);

@@ -3,6 +3,7 @@ import { AnimatePresence } from "framer-motion";
 import React, { ReactNode, Suspense } from "react";
 import { memo } from "react";
 import apps from "@/lib/apps";
+import Window from "../window";
 interface IProps {
   children?: ReactNode;
 }
@@ -13,7 +14,11 @@ const DeskTop: React.FC<IProps> = () => {
   const renderApps = () => {
     return showApps.map((id) => {
       const appInfo = apps.filter((app) => app.id === id)[0];
-      return <>{appInfo.content}</>;
+      return (
+        <Window key={appInfo.id} app={appInfo}>
+          {appInfo.content}
+        </Window>
+      );
     });
   };
   return (

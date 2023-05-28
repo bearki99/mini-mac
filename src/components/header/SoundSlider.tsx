@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { EarIcon, Sun } from "lucide-react";
+import React from "react";
+import { EarIcon} from "lucide-react";
 import Slider from "react-rangeslider";
 import "react-rangeslider/lib/index.css";
 import { memo } from "react";
