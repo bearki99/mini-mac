@@ -9,6 +9,7 @@ import type { DragOptions } from "@neodrag/react";
 import { useDraggable } from "@neodrag/react";
 import { cn } from "@/components/header/Battery";
 import Trafficheader from "../trafficheader";
+import { Resizable } from "re-resizable";
 interface IProps {
   app: AppsData;
   children: ReactNode;
@@ -20,7 +21,7 @@ interface IPos {
 const Window: React.FC<IProps> = (props) => {
   const { app, children } = props;
   const draggableRef = useRef(null);
-  const ZINDEX = 15;
+  const ZINDEX = 100;
   // 获取当前App窗口大小
   const { winWidth, winHeight } = useWindowSize();
   const isRotate = winWidth < 767;
@@ -106,28 +107,30 @@ const Window: React.FC<IProps> = (props) => {
       transition={{ type: "spring", stiffness: 100, damping: 20 }}
       exit={{ opacity: 0, dur: 2000 }}
     >
-      <motion.header
-        className="absolute z-10 flex w-full bg-transparent h-7 window-header rounded-t-xl"
-        onDoubleClick={max ? handleMin : handleMax}
-        initial={{ opacity: 0.3, scale: 1.1 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: "spring", stiffness: 100, damping: 20 }}
-      >
-        <Trafficheader
-          id={app.id}
-          handleMax={handleMax}
-          handleMini={handleMin}
-          handleMinimize={() => addMinimizeApps(app.id)}
-        />
-      </motion.header>
-      <motion.div
-        className="relative w-full h-full"
-        initial={{ opacity: 0.3, scale: 1.1 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ type: "spring", stiffness: 80, damping: 30 }}
-      >
-        {children}
-      </motion.div>
+      <Resizable>
+        <motion.header
+          className="absolute z-10 flex w-full bg-transparent h-7 window-header rounded-t-xl"
+          onDoubleClick={max ? handleMin : handleMax}
+          initial={{ opacity: 0.3, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 100, damping: 20 }}
+        >
+          <Trafficheader
+            id={app.id}
+            handleMax={handleMax}
+            handleMini={handleMin}
+            handleMinimize={() => addMinimizeApps(app.id)}
+          />
+        </motion.header>
+        <motion.div
+          className="relative w-full h-full"
+          initial={{ opacity: 0.3, scale: 1.1 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ type: "spring", stiffness: 80, damping: 30 }}
+        >
+          {children}
+        </motion.div>
+      </Resizable>
     </motion.div>
   );
 };

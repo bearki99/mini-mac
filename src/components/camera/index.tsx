@@ -7,6 +7,7 @@ interface IProps {
 }
 
 const Camera: React.FC<IProps> = () => {
+  const [click, setClick] = useState(false);
   const [img, setImg] = useState("");
   const camRef = useRef<Webcam>(null);
   const capture = () => {
@@ -37,6 +38,7 @@ const Camera: React.FC<IProps> = () => {
       <button
         className="w-16 h-16 mx-auto text-red-900 bg-purple-300 border rounded-full no-outline border-black/50"
         onClick={() => {
+          setClick(true);
           capture();
         }}
       >
