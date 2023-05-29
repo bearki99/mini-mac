@@ -8,7 +8,6 @@ interface Message {
 
 const ChatGPT: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
-  const [cursor, setCursorStatus] = useState("");
   const [inputValue, setInputValue] = useState("");
   const chatListRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,7 +31,7 @@ const ChatGPT: React.FC = () => {
     };
     setMessages((prevMessages) => [...prevMessages, newMessage]);
     setInputValue("");
-
+    console.log(process.env.REACT_APP_PUBLIC_OPENAI_API_KEY);
     try {
       const response = await fetch(
         "https://api.openai.com/v1/chat/completions",

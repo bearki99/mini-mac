@@ -2,6 +2,7 @@ import React from "react";
 import type { AppsData } from "./type";
 import LinkWeb from "@/components/linkWeb";
 import ChatGPT from "@/components/chatgpt";
+import Camera from "@/components/camera";
 const apps: AppsData[] = [
   {
     id: "launchpad",
@@ -23,6 +24,13 @@ const apps: AppsData[] = [
     height: 580,
     img: "/img/icons/chatgpt.png",
     content: <ChatGPT />,
+  },
+  {
+    id: 'facetime',
+    title: 'FaceTime',
+    img: 'img/icons/facetime.png',
+    height: 530,
+    content: <Camera/>,
   },
   // {
   //   id: "terminal",
