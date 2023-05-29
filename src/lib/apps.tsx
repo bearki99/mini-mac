@@ -1,6 +1,7 @@
 import React from "react";
 import type { AppsData } from "./type";
 import LinkWeb from "@/components/linkWeb";
+import ChatGPT from "@/components/chatgpt";
 const apps: AppsData[] = [
   {
     id: "launchpad",
@@ -15,15 +16,14 @@ const apps: AppsData[] = [
     img: "/img/icons/vscode.png",
     content: <LinkWeb src="https://github1s.com/" title="VSCode" />,
   },
-  // ,
-  // {
-  //   id: "chatgpt",
-  //   title: "ChatGPT",
-  //   width: 440,
-  //   height: 580,
-  //   img: "/img/icons/chatgpt.png",
-  //   content: <ChatGPT />,
-  // },
+  {
+    id: "chatgpt",
+    title: "ChatGPT",
+    width: 440,
+    height: 580,
+    img: "/img/icons/chatgpt.png",
+    content: <ChatGPT />,
+  },
   // {
   //   id: "terminal",
   //   title: "Terminal",

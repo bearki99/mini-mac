@@ -149,3 +149,20 @@ button {
 .dot-3 {
   animation: none;
 }
+.typing::after {
+  content: '▌';
+}
+.blinker::after {
+  animation: blinker 1s step-end infinite;
+}
+@keyframes blinker {
+  0% {
+    visibility: visible;
+  }
+  50% {
+    visibility: hidden;
+  }
+  100% {
+    visibility: visible;
+  }
+}
