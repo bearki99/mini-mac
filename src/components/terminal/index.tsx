@@ -157,6 +157,11 @@ const Terminal: React.FC<IProps> = () => {
       input.value = "";
       setChangeCount(0);
     }
+    input.focus();
+    setTimeout(() => {
+      const valueLength = input.value.length;
+      input.setSelectionRange(valueLength, valueLength);
+    });
   }, [changeCount]);
   return (
     <div
