@@ -30,7 +30,7 @@ const Camera: React.FC<IProps> = () => {
   return (
     <div className="relative flex-col h-full space-y-6 bg-gray-800 flex-center">
       <Webcam
-        className="border-8 border-white max-h-60 md:max-h-96"
+        className="border-8 border-white max-h-60 md:max-h-96 mt-10"
         ref={camRef}
         screenshotFormat="image/jpeg"
         audio={false}
