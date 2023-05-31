@@ -150,7 +150,6 @@ const Terminal: React.FC<IProps> = () => {
     const input = document.querySelector(
       `#terminal-input-${commandHistory.length}`
     ) as HTMLInputElement;
-    console.log(input, commandHistory.length);
     if (commandHistory.length && input) {
       input.value = commandHistory[commandHistory.length + changeCount];
     }
