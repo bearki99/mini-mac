@@ -1,8 +1,8 @@
-import React from "react";
 import type { AppsData } from "./type";
 import LinkWeb from "@/components/linkWeb";
 import ChatGPT from "@/components/chatgpt";
 import Camera from "@/components/camera";
+import Terminal from "@/components/terminal"
 const apps: AppsData[] = [
   {
     id: "launchpad",
@@ -32,14 +32,14 @@ const apps: AppsData[] = [
     height: 530,
     content: <Camera/>,
   },
-  // {
-  //   id: "terminal",
-  //   title: "Terminal",
-  //   width: 600,
-  //   height: 540,
-  //   img: "/img/icons/terminal.png",
-  //   content: <Terminal />,
-  // },
+  {
+    id: "terminal",
+    title: "Terminal",
+    width: 600,
+    height: 540,
+    img: "/img/icons/terminal.png",
+    content: <Terminal />,
+  },
   {
     id: "email",
     title: "Mail",
