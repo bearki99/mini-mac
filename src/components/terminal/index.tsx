@@ -134,7 +134,10 @@ const Terminal: React.FC<IProps> = () => {
           // ..的上一级
           // 设置当前的路径
           const curPath = path.slice(0, path.length - 1).join("/");
-          setCurrentDirectory(`${curPath}/`);
+          setTimeout(() => {
+            setCurrentDirectory(`${curPath}/`);
+          });
+
           // 设置当前的文件夹
           const last = path.pop() as string;
           dfs(FolderStructure, last);
@@ -234,6 +237,24 @@ const Terminal: React.FC<IProps> = () => {
       input.setSelectionRange(valueLength, valueLength);
     });
   }, [changeCount]);
+
+  useEffect(() => {
+    const span = document.querySelector(
+      `#terminal-currentDirectory-${commandHistory.length}`
+    ) as HTMLSpanElement;
+    span.innerHTML = currentDirectory;
+    localStorage.setItem("currentDic", currentDirectory);
+  }, [currentDirectory, commandHistory.length]);
+
+  useEffect(() => {
+    setCurrentDirectory(
+      `${currentDirectory + targetFolder?.title}${
+        targetFolder?.type === "folder" ? "/" : ""
+      }`
+    );
+    const items = targetFolder.children.map((item) => item.title).join("   ");
+    setLsItems(items);
+  }, [targetFolder]);
   return (
     <div
       className="p-4 pr-[5px] h-full text-white bg-[#1C1C1E]/95 rounded-lg"
