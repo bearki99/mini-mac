@@ -6,6 +6,7 @@ import { generateRandomString } from "@/utils";
 import { Row, Help, CommandNotFound } from "./utils";
 import { TerminalData } from "@/lib/type";
 import { FolderStructure } from "./data";
+import { useLocalStorageState } from "ahooks";
 interface IProps {
   children?: ReactNode;
 }
@@ -85,6 +86,7 @@ const Terminal: React.FC<IProps> = () => {
     closeApp(arg);
     generateRow(<div key={generateRandomString()}>Closed {arg}...</div>);
   }
+
   const apps = () => {
     const list = ["turbochat", "chatgpt", "vscode", "terminal", "facetime"];
     list.map((item) =>
@@ -93,14 +95,44 @@ const Terminal: React.FC<IProps> = () => {
       )
     );
   };
+
+  const cat = (arg = "") => {
+    targetFolder.children.map((item) => {
+      return item.title === arg
+        ? generateRow(
+            (
+              <div key={generateRandomString()}>{item.content}</div>
+            ) as JSX.Element
+          )
+        : "";
+    });
+  };
+
+  const cd = (arg = "") => {
+    const paths = localStorage.getItem("currentDic");
+    // 获取arg此时的参数
+    const args = [
+      arg,
+      arg.toUpperCase(),
+      arg.toLowerCase(),
+      arg.charAt(0).toUpperCase() + arg.slice(1),
+    ];
+    if (!arg || arg === "..") {
+      if (!paths) setCurrentDirectory("");
+      else {
+
+      }
+    }
+  };
+
   const commandList: CommandList = {
     clear,
     help: () => generateRow(<Help key={generateRandomString()} />),
     open,
     close,
     // ls,
-    // cd,
-    // cat,
+    cd,
+    cat,
     apps,
   };
 
