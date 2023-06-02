@@ -85,7 +85,14 @@ const Terminal: React.FC<IProps> = () => {
     closeApp(arg);
     generateRow(<div key={generateRandomString()}>Closed {arg}...</div>);
   }
-
+  const apps = () => {
+    const list = ["turbochat", "chatgpt", "vscode", "terminal", "facetime"];
+    list.map((item) =>
+      generateRow(
+        (<div key={generateRandomString()}>{item}</div>) as JSX.Element
+      )
+    );
+  };
   const commandList: CommandList = {
     clear,
     help: () => generateRow(<Help key={generateRandomString()} />),
@@ -94,7 +101,7 @@ const Terminal: React.FC<IProps> = () => {
     // ls,
     // cd,
     // cat,
-    // apps,
+    apps,
   };
 
   function executeCommand(
