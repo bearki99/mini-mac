@@ -4,8 +4,7 @@ import React, { ReactNode, useState, useEffect } from "react";
 import { memo } from "react";
 import { generateRandomString } from "@/utils";
 import { Row, Help, CommandNotFound } from "./utils";
-import { TerminalData } from "@/lib/type";
-import { FolderStructure } from "./data";
+import { FolderStructure, TerminalData } from "./data";
 import { useLocalStorageState } from "ahooks";
 interface IProps {
   children?: ReactNode;
@@ -37,6 +36,9 @@ const Terminal: React.FC<IProps> = () => {
   ]);
   const [targetFolder, setTargetFolder] =
     useState<TerminalData>(FolderStructure);
+  const [, setLsItems] = useLocalStorageState("LS_Items", {
+    defaultValue: targetFolder.children.map((item) => item.title).join("   "),
+  });
 
   function clickToFocus(e: React.MouseEvent<HTMLDivElement, MouseEvent>) {
     e.preventDefault();
@@ -107,21 +109,51 @@ const Terminal: React.FC<IProps> = () => {
         : "";
     });
   };
-
+  const dfs = (data: TerminalData, arg: string) => {
+    if (!data) return;
+    for (let i = 0; i < data.children.length; i++) {
+      if (data.children[i].title.toLowerCase() !== arg) {
+        dfs(data.children[i], arg);
+      } else {
+        setTargetFolder(data.children[i]);
+        return;
+      }
+    }
+  };
   const cd = (arg = "") => {
     const paths = localStorage.getItem("currentDic");
     // 获取arg此时的参数
-    const args = [
-      arg,
-      arg.toUpperCase(),
-      arg.toLowerCase(),
-      arg.charAt(0).toUpperCase() + arg.slice(1),
-    ];
     if (!arg || arg === "..") {
       if (!paths) setCurrentDirectory("");
       else {
-
+        if (paths.split("/").length <= 2) {
+          setCurrentDirectory("");
+          setTargetFolder(FolderStructure);
+        } else {
+          const path = paths.split("/");
+          // ..的上一级
+          // 设置当前的路径
+          const curPath = path.slice(0, path.length - 1).join("/");
+          setCurrentDirectory(`${curPath}/`);
+          // 设置当前的文件夹
+          const last = path.pop() as string;
+          dfs(FolderStructure, last);
+        }
       }
+    } else if (arg === "~") {
+      setCurrentDirectory("");
+      setTargetFolder(FolderStructure);
+    } else {
+      dfs(targetFolder, arg);
+      const target = JSON.parse(localStorage.getItem("LS_Items") as string)
+        .split(" ")
+        .some((item: string) => item.toLowerCase() === arg.toLowerCase());
+      !target &&
+        generateRow(
+          <div key={generateRandomString()}>
+            Directory of File not found: {arg}
+          </div>
+        );
     }
   };
 
