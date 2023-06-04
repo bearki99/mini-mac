@@ -2,6 +2,7 @@ import React from "react";
 import Header from "./components/header";
 import Footer from "./components/footer";
 import githubImage from "./public/img/ui/github.jpg";
+import githubDay from "./public/img/ui/wallpaper-day.jpg";
 import { useThemeStore } from "./store";
 import GlobalGround from "./components/globalGround";
 import Page from "./components/page";
@@ -14,7 +15,7 @@ function App() {
       <div
         className="App overflow-hidden bg-center bg-cover"
         style={{
-          backgroundImage: `url(${githubImage})`,
+          backgroundImage: `url(${githubDay})`,
           width: "100vw",
           height: "100vh",
           filter: `brightness( ${(brightness as number) * 0.7 + 50}%)`,
@@ -22,7 +23,7 @@ function App() {
       >
         <Header></Header>
         <Page />
-        <Launchpad/>
+        <Launchpad />
         <Footer />
       </div>
     </GlobalGround>

@@ -40,8 +40,6 @@ const FooterItem: React.FC<IProps> = (props) => {
       if (app.id === "turbochat") id ? openApp("turbochat") : openApp("login");
       else openApp(app.id);
     } else if (app.id === "email") {
-      // eslint-disable-next-line react-hooks/rules-of-hooks
-      useAlert("info", "个人邮箱: xyyang0505@mail.ustc.edu.cn", 3000);
     }
   };
   useEffect(() => {

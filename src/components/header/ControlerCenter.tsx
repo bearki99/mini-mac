@@ -45,7 +45,7 @@ const ControlerCenter = ({
           <FullScreenItem title="FullScreen" Icon={Expand} />
         </div>
 
-        <div className="flex flex-col w-40 h-3 space-y-3 shadow">
+        <div className="flex flex-col w-40 h-3 space-y-3">
           {/* Change Mode */}
           <ThemeMode bg={bg} dark={dark} setDark={setDark} />
           <ProtectMode

@@ -2,7 +2,7 @@ import type { AppsData } from "./type";
 import LinkWeb from "@/components/linkWeb";
 import ChatGPT from "@/components/chatgpt";
 import Camera from "@/components/camera";
-import Terminal from "@/components/terminal"
+import Terminal from "@/components/terminal";
 const apps: AppsData[] = [
   {
     id: "launchpad",
@@ -26,11 +26,11 @@ const apps: AppsData[] = [
     content: <ChatGPT />,
   },
   {
-    id: 'facetime',
-    title: 'FaceTime',
-    img: 'img/icons/facetime.png',
+    id: "facetime",
+    title: "FaceTime",
+    img: "img/icons/facetime.png",
     height: 530,
-    content: <Camera/>,
+    content: <Camera />,
   },
   {
     id: "terminal",
@@ -45,6 +45,7 @@ const apps: AppsData[] = [
     title: "Mail",
     img: "/img/icons/mail.png",
     content: <></>,
+    link: "mailto: xyyang0505@mail.ustc.edu.cn",
   },
   {
     id: "github",
