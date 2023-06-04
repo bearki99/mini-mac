@@ -171,7 +171,7 @@ const Terminal: React.FC<IProps> = () => {
 
   const ls = () => {
     const itmes = JSON.parse(localStorage.getItem("LS_Items") as string);
-    itmes.split(" ").map((item: string) => {
+    itmes.split(" ").forEach((item: string) => {
       generateRow(
         <div
           key={generateRandomString()}

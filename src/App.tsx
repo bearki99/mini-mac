@@ -5,6 +5,7 @@ import githubImage from "./public/img/ui/github.jpg";
 import { useThemeStore } from "./store";
 import GlobalGround from "./components/globalGround";
 import Page from "./components/page";
+import Launchpad from "./components/launchpad";
 
 function App() {
   const [brightness] = useThemeStore((state) => [state.brightness]);
@@ -21,6 +22,7 @@ function App() {
       >
         <Header></Header>
         <Page />
+        <Launchpad/>
         <Footer />
       </div>
     </GlobalGround>

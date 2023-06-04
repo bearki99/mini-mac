@@ -6,10 +6,10 @@ interface WallpaperData {
 }
 
 const wallpapers: WallpaperData = {
-  day: 'public/img/ui/wallpaper-day.jpg',
-  night: 'public/img/ui/wallpaper-night.jpg',
-  github: 'public/img/ui/github.jpg',
-  valley: 'public/img/ui/valley.jpeg',
-}
+  day: "public/img/ui/wallpaper-day.jpg",
+  night: "public/img/ui/wallpaper-night.jpg",
+  github: "/img/ui/github.jpg",
+  valley: "public/img/ui/valley.jpeg",
+};
 
-export default wallpapers
+export default wallpapers;
