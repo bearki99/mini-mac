@@ -20,7 +20,7 @@ const Terminal: React.FC<IProps> = () => {
     s.resetCurrentId,
   ]);
   const [openApp, closeApp] = useAppsStore((s) => [s.openApp, s.closeApp]);
-
+  const list = ["turbochat", "chatgpt", "vscode", "terminal", "facetime"];
   const [changeCount, setChangeCount] = useState(0);
   const [currentDirectory, setCurrentDirectory] = useState("");
   const [commandHistory, setCommandHistory] = useState<string[]>([]);
@@ -80,13 +80,21 @@ const Terminal: React.FC<IProps> = () => {
   }
 
   function open(arg = "") {
-    generateRow(<div key={generateRandomString()}>Opening {arg}...</div>);
-    openApp(arg);
+    if (list.indexOf(arg) === -1) {
+      generateRow(<div key={generateRandomString()}>App Don't Exist</div>);
+    } else {
+      generateRow(<div key={generateRandomString()}>Opening {arg}...</div>);
+      openApp(arg);
+    }
   }
 
   function close(arg = "") {
-    closeApp(arg);
-    generateRow(<div key={generateRandomString()}>Closed {arg}...</div>);
+    if (list.indexOf(arg) === -1) {
+      generateRow(<div key={generateRandomString()}>App Don't Exist</div>);
+    } else {
+      closeApp(arg);
+      generateRow(<div key={generateRandomString()}>Closed {arg}...</div>);
+    }
   }
 
   const apps = () => {
@@ -120,6 +128,7 @@ const Terminal: React.FC<IProps> = () => {
       }
     }
   };
+
   const cd = (arg = "") => {
     const paths = localStorage.getItem("currentDic");
     // 获取arg此时的参数
@@ -160,12 +169,26 @@ const Terminal: React.FC<IProps> = () => {
     }
   };
 
+  const ls = () => {
+    const itmes = JSON.parse(localStorage.getItem("LS_Items") as string);
+    itmes.split(" ").map((item: string) => {
+      generateRow(
+        <div
+          key={generateRandomString()}
+          className={item.includes(".") ? "text-primary" : ""}
+        >
+          {item}
+        </div>
+      );
+    });
+  };
+
   const commandList: CommandList = {
     clear,
     help: () => generateRow(<Help key={generateRandomString()} />),
     open,
     close,
-    // ls,
+    ls,
     cd,
     cat,
     apps,
