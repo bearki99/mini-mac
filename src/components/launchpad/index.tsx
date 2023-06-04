@@ -10,6 +10,7 @@ const Launchpad: React.FC = () => {
   const setShow = useLaunchpadStore((s) => s.setShow);
   const [focus, setFocus] = useState(false);
   const [searchText, setSearchText] = useState("");
+
   const search = () => {
     if (searchText === "") return launchpadApps;
     const text = searchText.toLowerCase();
@@ -66,7 +67,9 @@ const Launchpad: React.FC = () => {
                 className="flex-1 min-w-0 px-1 text-sm text-white bg-transparent outline-none"
                 placeholder={"Search"}
                 value={searchText}
-                onChange={(e) => setSearchText(e.target.value)}
+                onChange={(e) => {
+                  setSearchText(e.target.value);
+                }}
               />
             </div>
 
