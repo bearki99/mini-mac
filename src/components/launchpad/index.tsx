@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import wallpapers from "@/lib/wallpapers";
 import { useLaunchpadStore } from "@/store";
 import launchpadApps from "./apps";
 import githubImage from "@/public/img/ui/github.jpg";
