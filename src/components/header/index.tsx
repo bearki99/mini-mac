@@ -49,12 +49,12 @@ const Header: React.FC<IProps> = () => {
   return (
     <>
       <div
-        className={`w-full h-8 px-2  top-0  z-50 text-sm backdrop-blur-2xl shadow transition select-none
+        className={`w-full h-8 px-2  top-0  z-50 text-sm shadow select-none
        flex justify-between font-medium ${
          dark ? "text-white" : "text-black"
        }`}
        style={{
-        backgroundColor: 'rgb(243 244 246 / 0.3)'
+        backgroundColor: 'rgb(243 244 246 / 0.5)'
        }}
       >
         {/* apple icon */}
