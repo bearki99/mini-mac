@@ -11,11 +11,16 @@ interface IProps {
 
 const TrafficHeader: React.FC<IProps> = (props) => {
   const { id, handleMax, handleMini, handleMinimize } = props;
-  const [max, closeApp] = useAppsStore((s) => [s.max, s.closeApp]);
+  const [max, closeApp, setMax] = useAppsStore((s) => [
+    s.max,
+    s.closeApp,
+    s.setMax,
+  ]);
   const trafficLightRef = useRef<HTMLDivElement | null>(null);
   const [enter, setEnter] = useState(false);
   const closeHandler = () => {
     closeApp(id);
+    if (max) setMax("");
   };
   useEffect(() => {
     const trafficLight = trafficLightRef.current;
@@ -50,7 +55,9 @@ const TrafficHeader: React.FC<IProps> = (props) => {
         </div>
         <div
           onClick={handleMinimize}
-          className="bg-yellow-500 w-[13px] h-[13px] mt-2 rounded-full "
+          className={`${
+            max ? "bg-gray-500" : "bg-yellow-500"
+          } w-[13px] h-[13px] mt-2 rounded-full `}
         ></div>
         <div className="bg-green-500 w-[13px] h-[13px] mt-2 rounded-full "></div>
         {enter && (
@@ -63,7 +70,7 @@ const TrafficHeader: React.FC<IProps> = (props) => {
               className="-ml-[2px]"
             />
             <Minus
-              onClick={handleMinimize}
+              onClick={() => !max && handleMinimize()}
               size={10}
               color="black"
               strokeWidth={3}

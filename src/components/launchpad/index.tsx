@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Search } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { useLaunchpadStore } from "@/store";
+import { useLaunchpadStore, useThemeStore } from "@/store";
 import launchpadApps from "./apps";
-import githubImage from "@/public/img/ui/github.jpg";
+import githubDay from "@/public/img/ui/wallpaper-day.jpg";
+import githubNight from "@/public/img/ui/wallpaper-night.jpg";
 
 const Launchpad: React.FC = () => {
+  const [dark] = useThemeStore((s) => [s.dark]);
   const show = useLaunchpadStore((s) => s.show);
   const setShow = useLaunchpadStore((s) => s.setShow);
   const [focus, setFocus] = useState(false);
@@ -38,7 +40,7 @@ const Launchpad: React.FC = () => {
           className={`${close} z-[100] w-full h-full fixed bg-center bg-cover select-none`}
           id="launchpad"
           style={{
-            backgroundImage: `url(${githubImage})`,
+            backgroundImage: `url(${dark ? githubNight : githubDay})`,
           }}
           onClick={() => setShow(false)}
           initial={{ opacity: 0, scale: 1.4 }}
