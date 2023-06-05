@@ -3,6 +3,8 @@ import LinkWeb from "@/components/linkWeb";
 import ChatGPT from "@/components/chatgpt";
 import Camera from "@/components/camera";
 import Terminal from "@/components/terminal";
+import Safari from "@/components/safari";
+import Chat from "@/components/chat";
 const apps: AppsData[] = [
   {
     id: "launchpad",
@@ -10,10 +12,18 @@ const apps: AppsData[] = [
     img: "/img/icons/launchpad.png",
   },
   {
+    id: "safari",
+    title: "safari",
+    width: 860,
+    height: 500,
+    img: "/img/icons/safari.png",
+    content: <Safari />,
+  },
+  {
     id: "vscode",
     title: "VSCode",
     width: 860,
-    height: 560,
+    height: 800,
     img: "/img/icons/vscode.png",
     content: <LinkWeb src="https://github1s.com/" title="VSCode" />,
   },
@@ -39,6 +49,14 @@ const apps: AppsData[] = [
     height: 540,
     img: "/img/icons/terminal.png",
     content: <Terminal />,
+  },
+  {
+    id: "chat",
+    title: "Chat",
+    width: 969,
+    height: 640,
+    img: "/img/icons/turbochat.png",
+    content: <Chat />,
   },
   {
     id: "email",
