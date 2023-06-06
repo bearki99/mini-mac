@@ -36,13 +36,13 @@ let ChatGateway = class ChatGateway {
     async getOnlineUsers(client) {
         const data = await this.getActiveUser();
         const orderData = data.sort((a, b) => b.role.length - a.role.length);
-        client.emit('onlineUsers', orderData);
-        client.to(Constant_1.PUBLIC_ROOM).emit('onlineUsers', orderData);
+        client.emit("onlineUsers", orderData);
+        client.to(Constant_1.PUBLIC_ROOM).emit("onlineUsers", orderData);
     }
     async getMessages(client, { page }) {
         const length = await this.prisma.message.count();
         const take = page * this.pageSize;
-        const skip = (length - take < 0) ? 0 : (length - take);
+        const skip = length - take < 0 ? 0 : length - take;
         const messages = await this.prisma.message.findMany({
             include: {
                 user: {
@@ -56,10 +56,10 @@ let ChatGateway = class ChatGateway {
             skip,
             take,
         });
-        client.emit('getMessages', messages);
+        client.emit("getMessages", messages);
         return messages;
     }
-    async createMessage(client, { message, type, userId, size, page }) {
+    async createMessage(client, { message, type, userId, size, page, }) {
         await this.prisma.message.create({
             data: {
                 userId,
@@ -71,7 +71,7 @@ let ChatGateway = class ChatGateway {
         });
         const length = await this.prisma.message.count();
         const take = page * this.pageSize;
-        const skip = (length - take < 0) ? 0 : (length - take);
+        const skip = length - take < 0 ? 0 : length - take;
         const messages = await this.prisma.message.findMany({
             include: {
                 user: {
@@ -85,14 +85,14 @@ let ChatGateway = class ChatGateway {
             skip,
             take,
         });
-        client.emit('getMessages', messages);
-        client.to(Constant_1.PUBLIC_ROOM).emit('getMessages', messages);
+        client.emit("getMessages", messages);
+        client.to(Constant_1.PUBLIC_ROOM).emit("getMessages", messages);
     }
     async getActiveUser() {
         const sockets = await this.server.fetchSockets();
-        const userIdArr = sockets.map(item => item.handshake.query.id);
+        const userIdArr = sockets.map((item) => item.handshake.query.id);
         const uniqueUserIdArr = Array.from(new Set(userIdArr));
-        const realUser = uniqueUserIdArr.filter(item => item !== undefined);
+        const realUser = uniqueUserIdArr.filter((item) => item !== undefined);
         const res = [];
         for (const userId of realUser) {
             const user = await this.prisma.user.findUnique({
@@ -116,14 +116,14 @@ __decorate([
     __metadata("design:type", socket_io_1.Server)
 ], ChatGateway.prototype, "server", void 0);
 __decorate([
-    (0, websockets_1.SubscribeMessage)('onlineUsers'),
+    (0, websockets_1.SubscribeMessage)("onlineUsers"),
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [socket_io_1.Socket]),
     __metadata("design:returntype", Promise)
 ], ChatGateway.prototype, "getOnlineUsers", null);
 __decorate([
-    (0, websockets_1.SubscribeMessage)('getMessages'),
+    (0, websockets_1.SubscribeMessage)("getMessages"),
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
@@ -131,7 +131,7 @@ __decorate([
     __metadata("design:returntype", Promise)
 ], ChatGateway.prototype, "getMessages", null);
 __decorate([
-    (0, websockets_1.SubscribeMessage)('createMessage'),
+    (0, websockets_1.SubscribeMessage)("createMessage"),
     __param(0, (0, websockets_1.ConnectedSocket)()),
     __param(1, (0, websockets_1.MessageBody)()),
     __metadata("design:type", Function),
@@ -141,7 +141,7 @@ __decorate([
 ChatGateway = __decorate([
     (0, websockets_1.WebSocketGateway)(80, {
         cors: {
-            origin: '*',
+            origin: "*",
         },
     }),
     __metadata("design:paramtypes", [nestjs_prisma_1.PrismaService])

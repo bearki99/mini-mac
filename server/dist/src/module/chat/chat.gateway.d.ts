@@ -1,6 +1,6 @@
-import { OnGatewayConnection, OnGatewayDisconnect } from '@nestjs/websockets';
-import { PrismaService } from 'nestjs-prisma';
-import { Server, Socket } from 'socket.io';
+import { OnGatewayConnection, OnGatewayDisconnect } from "@nestjs/websockets";
+import { PrismaService } from "nestjs-prisma";
+import { Server, Socket } from "socket.io";
 export declare class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect {
     private prisma;
     constructor(prisma: PrismaService);
@@ -20,7 +20,7 @@ export declare class ChatGateway implements OnGatewayConnection, OnGatewayDiscon
             role: string;
         };
     })[]>;
-    createMessage(client: Socket, { message, type, userId, size, page }: {
+    createMessage(client: Socket, { message, type, userId, size, page, }: {
         message: string;
         type: string;
         userId: string;

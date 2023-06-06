@@ -5,6 +5,9 @@ import useLaunchpadStore from "./launchpad";
 import useAppsStore from "./app";
 import useDockStore from "./dock";
 import useTerminalStore from "./terminal";
+import useChatStore from "./chat";
+import useSocketStore from "./socket";
+import useUserStore from "./user";
 export {
   useThemeStore,
   useControlStore,
@@ -13,4 +16,7 @@ export {
   useAppsStore,
   useDockStore,
   useTerminalStore,
+  useChatStore,
+  useSocketStore,
+  useUserStore
 };

@@ -5,7 +5,6 @@ const prisma = new client_1.PrismaClient();
 async function main() {
     await prisma.$connect();
     const allUsers = await prisma.user.findMany();
-    console.log(allUsers);
 }
 main()
     .then(async () => {

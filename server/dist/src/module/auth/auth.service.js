@@ -40,11 +40,13 @@ let AuthService = class AuthService {
     }
     async login(user) {
         const signInfo = { username: user.username, sub: user.id };
-        const _a = await this.prisma.user.findUnique({ where: { id: user.id } }), { password } = _a, userInfo = __rest(_a, ["password"]);
+        const _a = await this.prisma.user.findUnique({
+            where: { id: user.id },
+        }), { password } = _a, userInfo = __rest(_a, ["password"]);
         return {
             token: this.jwtService.sign(signInfo),
             userInfo,
-            msg: 'Login successful',
+            msg: "Login successful",
         };
     }
     async register(user) {
