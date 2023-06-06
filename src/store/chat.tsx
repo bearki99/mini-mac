@@ -5,20 +5,6 @@ interface ActiveUser {
   role: string;
   username: string;
 }
-interface Message {
-  id: number;
-  userId: string;
-  roomId?: string;
-  content: string;
-  type: string;
-  createAt?: Date;
-  size: string;
-  user?: {
-    username: string;
-    avatar: string;
-    role: string;
-  };
-}
 interface useChatState {
   messages: any;
   // judge the new message is or not sent by you

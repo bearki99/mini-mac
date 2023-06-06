@@ -36,7 +36,7 @@ const FooterItem: React.FC<IProps> = (props) => {
         removeMinimizeApps(app.id);
         return;
       }
-      if (app.id === "turbochat") id ? openApp("turbochat") : openApp("login");
+      if (app.id === "chat") id ? openApp("chat") : openApp("login");
       else openApp(app.id);
     } else if (app.id === "email") {
     }
