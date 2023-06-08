@@ -1,7 +1,7 @@
-import { post } from "@/lib/http";
 import { useAlertStore, useAppsStore } from "@/store";
 import React, { ReactNode, useState } from "react";
 import { memo } from "react";
+import request from "@/http/index";
 interface IProps {
   children?: ReactNode;
 }
@@ -14,15 +14,23 @@ const Login: React.FC<IProps> = () => {
   const Alert = useAlertStore((s) => s.useAlert);
   const handleLogin = async () => {
     try {
-      const res = await post("/login", { username, password });
+      const mydata = { name: username, pwd: password };
+      const res = await request.login(mydata);
+
       const data = res.data as any;
-      if (res.code === 200) {
+      if (res.status === 200) {
         localStorage.setItem("token", data.token);
-        localStorage.setItem("userInfo", JSON.stringify(data.userInfo));
         Alert("success", res.msg);
         closeApp("login");
         openApp("chat");
       }
+      // if (res.code === 200) {
+      //   localStorage.setItem("token", data.token);
+      //   localStorage.setItem("userInfo", JSON.stringify(data.userInfo));
+      //   Alert("success", res.msg);
+      //   closeApp("login");
+      //   openApp("chat");
+      // }
     } catch (error) {
       Alert("warning", "账号/密码错误");
     }
@@ -99,7 +107,7 @@ const Login: React.FC<IProps> = () => {
               !!username && !!password ? "bg-[#0099ff]" : "bg-[#a7dbfe]"
             }`}
           >
-            Log In / Sign Up
+            Log In
           </button>
         </div>
         <div className="w-full h-auto  pt-[20px] flex-center">
