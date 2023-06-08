@@ -13,7 +13,7 @@ async function bootstrap() {
     app.useGlobalFilters(new http_exception_fillter_1.HttpExceptionFilter());
     app.useGlobalInterceptors(new transform_interceptor_1.TransformInterceptor());
     app.useGlobalPipes(new common_1.ValidationPipe());
-    await app.listen(8080);
+    await app.listen(8088);
 }
 bootstrap();
 //# sourceMappingURL=main.js.map
