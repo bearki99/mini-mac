@@ -29,17 +29,22 @@ const Login: React.FC<IProps> = () => {
           openApp("chat");
         }
       } else {
+        // 进行注册
+        try {
+          await request.register({
+            name: username,
+            pwd: password,
+            checkPwd: password,
+            email: email,
+          });
+        } catch (error) {
+          if(typeof error !== 'string') Alert("success", "注册成功");
+          else Alert("warning", error);
+        }
       }
-
-      // if (res.code === 200) {
-      //   localStorage.setItem("token", data.token);
-      //   localStorage.setItem("userInfo", JSON.stringify(data.userInfo));
-      //   Alert("success", res.msg);
-      //   closeApp("login");
-      //   openApp("chat");
-      // }
     } catch (error) {
-      Alert("warning", "账号/密码错误");
+      if (isRegister) Alert("warning", error as string);
+      else Alert("warning", "账号/密码错误");
     }
   };
 
@@ -119,7 +124,7 @@ const Login: React.FC<IProps> = () => {
               <input
                 type="text"
                 placeholder="Username"
-                className="h-full w-[130px] text-lg focus:outline-none"
+                className="h-full w-[140px] text-lg focus:outline-none"
                 value={username}
                 onChange={(e) => {
                   setUsername(e.target.value);
@@ -133,7 +138,7 @@ const Login: React.FC<IProps> = () => {
               <input
                 type="password"
                 placeholder="Password"
-                className="h-full w-[130px] text-lg focus:outline-none"
+                className="h-full w-[140px] text-lg focus:outline-none"
                 value={password}
                 onChange={(e) => {
                   e.preventDefault();
@@ -143,12 +148,12 @@ const Login: React.FC<IProps> = () => {
               />
               <div className="h-full w-[60px] bg-white"></div>
             </div>
-            <div className="h-[42px] flex text-black font-bold flex-center">
-              <div className="h-full w-[60px] bg-white  flex-center"> </div>
+            <div className="h-[42px] flex text-black font-black flex-center">
+              <div className="h-full w-[60px] bg-white  flex-center"></div>
               <input
                 type="text"
                 placeholder="Email"
-                className="h-full w-[130px] text-lg focus:outline-none"
+                className="h-full w-[140px] text-lg focus:outline-none"
                 value={email}
                 onChange={(e) => {
                   e.preventDefault();
@@ -156,6 +161,7 @@ const Login: React.FC<IProps> = () => {
                 }}
                 autoComplete="off"
               />
+              <div className="h-full w-[60px] bg-white"></div>
             </div>
           </>
         )}
