@@ -12,41 +12,10 @@ interface IProps {
 }
 
 const Chat: React.FC<IProps> = () => {
-  const setMessages = useChatStore((s) => s.setMessages);
-  const setActiveUsers = useChatStore((s) => s.setActiveUsers);
   const [socket, setSocket] = useSocketStore((s) => [s.socket, s.setSocket]);
   const [setUserInfo] = useUserStore((s) => [
     s.setUserInfo,
   ]);
-  useEffect(() => {
-    setUserInfo(JSON.parse(localStorage.getItem("userInfo") as string));
-    const id = { ...JSON.parse(localStorage.getItem("userInfo") as string) }.id;
-    const host = "http://localhost:80/";
-    const newSocket = io(host, {
-      query: {
-        id,
-      },
-    });
-    setSocket(newSocket);
-  }, []);
-  useEffect(() => {
-    if (socket) {
-      socket.connect();
-      socket.on("connect", () => {});
-      socket.on("getMessages", (data) => {
-        if (data) setMessages(data);
-      });
-      socket.on("onlineUsers", (data) => {
-        if (data) setActiveUsers(data);
-      });
-      socket.on("disconnect", () => {
-        // do something
-      });
-      return () => {
-        socket.disconnect();
-      };
-    }
-  }, [socket]);
   return (
     <>
       <div className="flex h-full backdrop-blur-sm">

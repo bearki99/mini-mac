@@ -1,10 +1,11 @@
-import React, { useRef, useEffect, useState} from "react";
+import React, { useRef, useEffect, useState } from "react";
 import { memo } from "react";
 import type { MotionValue } from "framer-motion";
 import { motion } from "framer-motion";
 import type { AppsData } from "@/lib/type";
 import useDockHoverAnimation from "@/hooks/useDockHoverAnimation";
 import { useLaunchpadStore, useAppsStore } from "@/store";
+import request from "@/http/index";
 interface IProps {
   app: AppsData;
   mouseX: MotionValue;
@@ -24,19 +25,30 @@ const FooterItem: React.FC<IProps> = (props) => {
   const setShow = useLaunchpadStore((s) => s.setShow);
   const removeMinimizeApps = useAppsStore((s) => s.removeMinimizeApps);
   const miniMizeApps = useAppsStore((s) => s.minimizeApps);
-  const [id, setID] = useState('');
-  
+  const [id, setID] = useState("");
+  const [isLogin, setLogin] = useState(false);
+  useEffect(() => {
+    try {
+      request.login({ name: "", pwd: "" }).then(res => {
+        if(res.data._id) setLogin(true);
+      });
+    } catch (error) {}
+  }, []);
 
   const dockItemClick = () => {
     if (app.id === "launchpad") {
       setShow(!show);
-    } else if (!bannedApp.includes(app.id) && app.id !== 'github' && app.id !== 'email') {
+    } else if (
+      !bannedApp.includes(app.id) &&
+      app.id !== "github" &&
+      app.id !== "email"
+    ) {
       const isMinimize = miniMizeApps.includes(app.id);
       if (isMinimize) {
         removeMinimizeApps(app.id);
         return;
       }
-      if (app.id === "chat") id ? openApp("chat") : openApp("login");
+      if (app.id === "chat") isLogin ? openApp("chat") : openApp("login");
       else openApp(app.id);
     } else if (app.id === "email") {
     }
