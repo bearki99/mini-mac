@@ -58,4 +58,56 @@ export default {
     });
     return res;
   },
+
+  // 获取用户的信息
+  async getUser(_id: string): Promise<any> {
+    const res = await myAxios({
+      method: "get",
+      url: `user?=id=${_id}`,
+    });
+    return res;
+  },
+
+  // 获取好友列表
+  async getFriendList(): Promise<any> {
+    const res = await myAxios({
+      method: "get",
+      url: "friend/list",
+    });
+    return res;
+  },
+
+  // 获取好友申请列表
+  async getWaitConfirmFriend(): Promise<any> {
+    const res = myAxios({
+      method: "get",
+      url: "friend/waitConfirm",
+    });
+    return res;
+  },
+
+  async createGroup(data: { name: string; notes?: string }): Promise<any> {
+    const res = await myAxios({
+      method: "put",
+      url: "group/create",
+      data,
+    });
+    return res;
+  },
+
+  async getGroup(_id: string) {
+    const res = await myAxios({
+      method: "get",
+      url: `group?_id=${_id}`,
+    });
+    return res;
+  },
+
+  async getGroupList(): Promise<any> {
+    const res = await myAxios({
+      method: "get",
+      url: `group/list`,
+    });
+    return res;
+  },
 };

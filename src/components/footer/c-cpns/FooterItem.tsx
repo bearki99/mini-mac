@@ -29,9 +29,12 @@ const FooterItem: React.FC<IProps> = (props) => {
   const [isLogin, setLogin] = useState(false);
   useEffect(() => {
     try {
-      request.login({ name: "", pwd: "" }).then(res => {
-        if(res.data._id) setLogin(true);
-      });
+      request
+        .login({ name: "", pwd: "" })
+        .then((res) => {
+          if (res.data._id) setLogin(true);
+        })
+        .catch((err) => {});
     } catch (error) {}
   }, []);
 

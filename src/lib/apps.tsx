@@ -6,6 +6,7 @@ import Terminal from "@/components/terminal";
 import Safari from "@/components/safari";
 import Chat from "@/components/chat";
 import Login from "@/components/chat/c-cpns/login";
+import Mine from "@/components/mine";
 const apps: AppsData[] = [
   {
     id: "launchpad",
@@ -57,7 +58,7 @@ const apps: AppsData[] = [
     width: 969,
     height: 640,
     img: "/img/icons/turbochat.png",
-    content: <Chat />,
+    content: <Mine />,
   },
   {
     id: "login",
