@@ -1,6 +1,6 @@
 import React, { ReactNode, useRef, useState, useEffect } from "react";
 import { memo } from "react";
-import { ChatRoomWrapper } from "./style";
+import styles from './index.module.css'
 import { Input, Button } from "antd";
 import { message } from "antd";
 import { Dropdown } from "antd";
@@ -27,31 +27,6 @@ interface IProps {
   id?: number;
   socket?: any;
   selectUser?: string;
-}
-interface Chunk {
-  md5: string;
-  chunk: Blob;
-}
-
-class Scheduler {
-  max;
-  count;
-  queue: any[];
-  constructor(max: number) {
-    this.max = max;
-    this.count = 0;
-    this.queue = [];
-  }
-  async add(fn: any) {
-    if (this.count >= this.max) {
-      await new Promise((resolve) => this.queue.push(resolve));
-    }
-    this.count++;
-    const res = fn();
-    this.count--;
-    this.queue.length && this.queue.shift()();
-    return res;
-  }
 }
 
 const ChatRoom: React.FC<IProps> = (props) => {
@@ -146,13 +121,13 @@ const ChatRoom: React.FC<IProps> = (props) => {
   };
 
   return (
-    <ChatRoomWrapper>
-      {selectUser == "" && <div>欢迎来到聊天室</div>}
+    <>
+      {selectUser === "" && <div>欢迎来到聊天室</div>}
       {selectUser !== "" && (
         <>
-          <div className="header">
-            <div className="left">
-              <div className="icon">
+          <div className={styles.header}>
+            <div className={styles.left}>
+              <div className={styles.icon}>
                 <img
                   src={require(`@/assets/img/head_portrait_${selectUser}.jpg`)}
                   alt=""
@@ -160,13 +135,13 @@ const ChatRoom: React.FC<IProps> = (props) => {
                 <span>{selectUser}</span>
               </div>
             </div>
-            <div className="right">
-              <button className="right-btn">
-                <div className="transmit" onClick={handleTransmit}>
+            <div className={styles.right}>
+              <button className={styles.rightbtn}>
+                <div className={styles.transmit} onClick={handleTransmit}>
                   <input
                     type="file"
                     multiple={true}
-                    className="input"
+                    className={styles.input}
                     ref={myRef}
                   />
                   <CopyOutlined />
@@ -174,7 +149,7 @@ const ChatRoom: React.FC<IProps> = (props) => {
               </button>
             </div>
           </div>
-          <div className="main-content" ref={chatContainerRef}>
+          <div className={styles.mainContent} ref={chatContainerRef}>
             {messages &&
               messages.map((item: any) => {
                 return (
@@ -186,8 +161,8 @@ const ChatRoom: React.FC<IProps> = (props) => {
                 );
               })}
           </div>
-          <div className="footer">
-            <Input.Group size="large" className="input-group">
+          <div className={styles.footer}>
+            <Input.Group size="large" className={styles.inputGroup}>
               {/* emoji表情 */}
               <Dropdown
                 placement="topLeft"
@@ -197,7 +172,7 @@ const ChatRoom: React.FC<IProps> = (props) => {
                 dropdownRender={() => <Emoji handleEmoji={handleEmoji} />}
                 arrow={{ pointAtCenter: true }}
               >
-                <Button className="my-btn1">
+                <Button className={styles.myBtn1}>
                   <img
                     src={require("@/assets/img/emoji/smiling-face.png")}
                     alt=""
@@ -211,13 +186,13 @@ const ChatRoom: React.FC<IProps> = (props) => {
                 onChange={(e) => setInputVal(e.target.value)}
                 value={inputVal}
                 ref={ref}
-                className="my-input"
+                className={styles.myinput}
               />
               <Button
                 type="primary"
                 size="large"
                 onClick={handleSubmit}
-                className="mybtn"
+                className={styles.mybtn}
               >
                 发送
               </Button>
@@ -225,7 +200,7 @@ const ChatRoom: React.FC<IProps> = (props) => {
           </div>
         </>
       )}
-    </ChatRoomWrapper>
+    </>
   );
 };
 export default memo(ChatRoom);
