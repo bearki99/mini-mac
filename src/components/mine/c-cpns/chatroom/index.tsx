@@ -87,16 +87,16 @@ const ChatRoom: React.FC<IProps> = (props) => {
     val = val?.replaceAll(" ", "");
     if (val == "") warning();
     else {
-      socket.emit("message", {
-        text: val,
-        name: localStorage.getItem("username"),
-        id: `${socket.id}${Math.random()}`,
-        socketID: socket.id,
-        time: new Date().toLocaleString(),
-        realTime: +new Date(),
-        type: 0, //把0设置为文本,
-        sender: localStorage.getItem("username"),
-      });
+      // socket.emit("message", {
+      //   text: val,
+      //   name: localStorage.getItem("username"),
+      //   id: `${socket.id}${Math.random()}`,
+      //   socketID: socket.id,
+      //   time: new Date().toLocaleString(),
+      //   realTime: +new Date(),
+      //   type: 0, //把0设置为文本,
+      //   sender: localStorage.getItem("username"),
+      // });
       setInputVal("");
     }
   }

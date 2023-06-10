@@ -1,14 +1,14 @@
 import React, { ReactNode } from "react";
 import { memo } from "react";
-import { EmojiWrapper } from "./style";
+import styles from "./index.module.css";
 interface IProps {
   children?: ReactNode;
   handleEmoji?: any;
 }
 
 const Emoji: React.FC<IProps> = (props) => {
-    const {handleEmoji} = props;
-    const emojiItem = [
+  const { handleEmoji } = props;
+  const emojiItem = [
     require("@/assets/img/emoji/slightly-smiling-face.png"),
     require("@/assets/img/emoji/smiling-face.png"),
     require("@/assets/img/emoji/smiling-face-with-heart-eyes.png"),
@@ -36,21 +36,27 @@ const Emoji: React.FC<IProps> = (props) => {
     require("@/assets/img/emoji/two-hearts.png"),
     require("@/assets/img/emoji/rainbow.png"),
     require("@/assets/img/emoji/thought-balloon.png"),
-    ];
-    const handleClick = function(item: string){
-        handleEmoji(item);
-    }
-  return <EmojiWrapper>
-    <div className="emoji-content">
-        {emojiItem && emojiItem.map((item: string)=>{
-            return <div 
-            className="emoji-item" 
-            key={item} 
-            onClick={()=>handleClick(item)}>
+  ];
+  const handleClick = function (item: string) {
+    handleEmoji(item);
+  };
+  return (
+    <div className={styles.wrapper}>
+      <div className={styles.emojiContent}>
+        {emojiItem &&
+          emojiItem.map((item: string) => {
+            return (
+              <div
+                className={styles.emojiItem}
+                key={item}
+                onClick={() => handleClick(item)}
+              >
                 <img src={item} alt="" />
-            </div>
-        })}
+              </div>
+            );
+          })}
+      </div>
     </div>
-  </EmojiWrapper>;
+  );
 };
 export default memo(Emoji);
