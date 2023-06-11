@@ -155,4 +155,30 @@ export default {
     })) as any;
     return res;
   },
+  async getInfoList(data: any): Promise<any> {
+    const res = (await myAxios({
+      method: "post",
+      url: "message/messageList",
+      data,
+    })) as any;
+    return res;
+  },
+  async sendMessage(data: any): Promise<any> {
+    const res = (await myAxios({
+      method: "put",
+      url: "message",
+      data,
+    })) as any;
+    return res;
+  },
+  async getMessage(
+    data: any
+  ): Promise<any> {
+    const res = (await myAxios({
+      method: "post",
+      url: "message",
+      data,
+    })) as any;
+    return res;
+  },
 };

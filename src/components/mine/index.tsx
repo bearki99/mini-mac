@@ -8,6 +8,7 @@ import request from "@/http/index";
 import { Button, Input, Skeleton } from "antd";
 import { useChatStore } from "@/store";
 import MyServer from "@/socket";
+import useMessageStore from "@/store/message";
 const { socket } = MyServer.getInstance();
 interface IProps {
   children?: ReactNode;
@@ -49,6 +50,9 @@ const Mine: React.FC<IProps> = (props) => {
     s.updateWaitConfirmFriend,
     s.updateWaitConfirmGroup,
   ]);
+  const [message, saveMessage, unreadCount, initMessage] = useMessageStore(
+    (s: any) => [s.message, s.saveMessage, s.unreadCount, s.initMessage]
+  );
   const init = async () => {
     try {
       await updateFriendList();
@@ -60,6 +64,50 @@ const Mine: React.FC<IProps> = (props) => {
       });
       socket.emit("initSocketRoom", newgroupList, "group");
     } catch (error) {}
+  };
+  const initSocketEvent = () => {
+    socket.on("receiveMessage", async (data) => {
+      const targetIdInRoom =
+        data.targetType === 0 ? data.userId : data.targetId;
+      if (
+        messageStore.message.inChatRoom &&
+        targetIdInRoom === messageStore.message.id
+      )
+        return;
+      const { user } = userStore;
+      if (data.userId === user._id) return;
+      if (data.targetType === 0 && data.targetId !== user._id) return;
+      const flag = messageStore.message.messageList.some((item) => {
+        const targetType = item.type === "user" ? 0 : 1;
+        const targetId = item.type === "user" ? data.userId : data.targetId;
+        if (item._id === targetId && targetType === data.targetType) {
+          item.unreadCount += 1;
+          item.lastMessage = data;
+          messageStore.saveMessage();
+          return true;
+        }
+        return false;
+      });
+      if (!flag && data.userId !== undefined && data.targetId !== undefined) {
+        const _id = data.targetType === 0 ? data.userId : data.targetId;
+        const type = data.targetType === 0 ? "user" : "group";
+        messageStore.message.messageList.push({
+          _id,
+          type,
+          unreadCount: 1,
+        });
+        messageStore.saveMessage();
+        if (messageStore.message.inChatRoom) return;
+        messageStore.initMessage();
+      }
+    });
+    socket.on("receiveApply", async (data) => {
+      if ("friendState" in data) {
+        updateWaitConfirmFriend();
+      } else if ("groupState" in data) {
+        updateWaitConfirmGroup();
+      }
+    });
   };
   useEffect(() => {
     // 获取好友列表
