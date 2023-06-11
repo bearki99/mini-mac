@@ -1,6 +1,7 @@
-import MyServer from "@/socket";
+
 import { io, Socket } from "socket.io-client";
 import myAxios from "./myAxios";
+import MyServer from "@/socket";
 const { socket } = MyServer.getInstance();
 
 // eslint-disable-next-line import/no-anonymous-default-export

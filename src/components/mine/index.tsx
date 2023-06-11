@@ -1,4 +1,4 @@
-import React, { ReactNode, useState, useRef, Suspense, Fragment } from "react";
+import React, { ReactNode, useState, Suspense } from "react";
 import { memo, useEffect } from "react";
 import ChatlistItem from "./c-cpns/chatlist-item";
 import Chatroom from "./c-cpns/chatroom";
@@ -6,6 +6,9 @@ import styles from "./index.module.css";
 import myData from "@/assets/data/chat-data.json";
 import request from "@/http/index";
 import { Button, Input, Skeleton } from "antd";
+import { useChatStore } from "@/store";
+import MyServer from "@/socket";
+const { socket } = MyServer.getInstance();
 interface IProps {
   children?: ReactNode;
   socket?: any;
@@ -27,17 +30,40 @@ const Mine: React.FC<IProps> = (props) => {
   const newData = myData.filter(
     (item: IData) => item.name !== localStorage.getItem("username")
   );
-
+  const [
+    friendList,
+    groupList,
+    waitConfirmFriend,
+    waitConfirmGroup,
+    updateFriendList,
+    updateGroupList,
+    updateWaitConfirmFriend,
+    updateWaitConfirmGroup,
+  ] = useChatStore((s: any) => [
+    s.friendList,
+    s.groupList,
+    s.waitConfirmFriend,
+    s.waitConfirmGroup,
+    s.updateFriendList,
+    s.updateGroupList,
+    s.updateWaitConfirmFriend,
+    s.updateWaitConfirmGroup,
+  ]);
+  const init = async () => {
+    try {
+      await updateFriendList();
+      await updateGroupList();
+      await updateWaitConfirmFriend();
+      await updateWaitConfirmGroup();
+      const newgroupList = groupList.map((item: any) => {
+        return item._id;
+      });
+      socket.emit("initSocketRoom", newgroupList, "group");
+    } catch (error) {}
+  };
   useEffect(() => {
     // 获取好友列表
-    request.getFriendList().then(
-      (res) => {
-        console.log(res);
-      },
-      (err) => {
-        // 好友列表为空
-      }
-    );
+    init();
   }, []);
   const onSearch = async (value: string) => {
     setFirst(false);
