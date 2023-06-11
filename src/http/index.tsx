@@ -110,4 +110,48 @@ export default {
     });
     return res;
   },
+
+  async addFriend(data: { friendId: string }): Promise<any> {
+    const res = (await myAxios({
+      method: "put",
+      url: "friend",
+      data,
+    })) as any;
+    return res;
+  },
+
+  async agreeFriend(data: { friendId: string }): Promise<any> {
+    const res = (await myAxios({
+      method: "post",
+      url: "friend",
+      data,
+    })) as any;
+    return res;
+  },
+
+  async joinGroup(data: { groupId: string }): Promise<any> {
+    const res = (await myAxios({
+      method: "put",
+      url: "group",
+      data,
+    })) as any;
+    return res;
+  },
+
+  async agreeGroup(data: { groupId: string; userId: string }): Promise<any> {
+    const res = (await myAxios({
+      method: "post",
+      url: "group",
+      data,
+    })) as any;
+    return res;
+  },
+
+  async getWaitConfirmGroup(): Promise<any> {
+    const res = (await myAxios({
+      method: "get",
+      url: `group/waitConfirm`,
+    })) as any;
+    return res;
+  },
 };

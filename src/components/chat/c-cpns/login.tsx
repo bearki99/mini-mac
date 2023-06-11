@@ -38,8 +38,10 @@ const Login: React.FC<IProps> = () => {
             email: email,
           });
         } catch (error) {
-          if(typeof error !== 'string') Alert("success", "注册成功");
-          else Alert("warning", error);
+          if (typeof error !== "string") {
+            Alert("success", "注册成功");
+            localStorage.setItem("username", username);
+          } else Alert("warning", error);
         }
       }
     } catch (error) {
