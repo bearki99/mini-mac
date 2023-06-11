@@ -23,6 +23,7 @@ const Login: React.FC<IProps> = () => {
 
         const data = res.data as any;
         if (res.status === 200) {
+          localStorage.setItem("user", JSON.stringify(data));
           localStorage.setItem("token", data.token);
           Alert("success", res.msg);
           closeApp("login");

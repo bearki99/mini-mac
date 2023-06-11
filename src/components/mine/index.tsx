@@ -69,21 +69,17 @@ const Mine: React.FC<IProps> = (props) => {
     socket.on("receiveMessage", async (data) => {
       const targetIdInRoom =
         data.targetType === 0 ? data.userId : data.targetId;
-      if (
-        messageStore.message.inChatRoom &&
-        targetIdInRoom === messageStore.message.id
-      )
-        return;
-      const { user } = userStore;
+      if (message.inChatRoom && targetIdInRoom === message.id) return;
+      const user = JSON.parse(localStorage.getItem("user") || "");
       if (data.userId === user._id) return;
       if (data.targetType === 0 && data.targetId !== user._id) return;
-      const flag = messageStore.message.messageList.some((item) => {
+      const flag = message.messageList.some((item: any) => {
         const targetType = item.type === "user" ? 0 : 1;
         const targetId = item.type === "user" ? data.userId : data.targetId;
         if (item._id === targetId && targetType === data.targetType) {
           item.unreadCount += 1;
           item.lastMessage = data;
-          messageStore.saveMessage();
+          saveMessage();
           return true;
         }
         return false;
@@ -91,14 +87,14 @@ const Mine: React.FC<IProps> = (props) => {
       if (!flag && data.userId !== undefined && data.targetId !== undefined) {
         const _id = data.targetType === 0 ? data.userId : data.targetId;
         const type = data.targetType === 0 ? "user" : "group";
-        messageStore.message.messageList.push({
+        message.messageList.push({
           _id,
           type,
           unreadCount: 1,
         });
-        messageStore.saveMessage();
-        if (messageStore.message.inChatRoom) return;
-        messageStore.initMessage();
+        saveMessage();
+        if (message.inChatRoom) return;
+        initMessage();
       }
     });
     socket.on("receiveApply", async (data) => {
@@ -112,6 +108,7 @@ const Mine: React.FC<IProps> = (props) => {
   useEffect(() => {
     // 获取好友列表
     init();
+    initSocketEvent();
   }, []);
   const onSearch = async (value: string) => {
     setFirst(false);
