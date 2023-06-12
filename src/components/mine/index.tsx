@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 import myData from "@/assets/data/chat-data.json";
 import request from "@/http/index";
 import { Button, Input, Skeleton } from "antd";
-import { useAlertStore, useChatStore } from "@/store";
+import { useAlertStore, useChatStore, useUserStore } from "@/store";
 import MyServer from "@/socket";
 import useMessageStore from "@/store/message";
 const { socket } = MyServer.getInstance();
@@ -28,6 +28,7 @@ const Mine: React.FC<IProps> = (props) => {
   const [query, setQuery] = useState(false);
   const [findUsers, setFindUsers] = useState([]);
   const [findGroups, setFindGroups] = useState([]);
+  const [handle, setHandle] = useState(false);
   const newData = myData.filter(
     (item: IData) => item.name !== localStorage.getItem("username")
   );
@@ -53,6 +54,7 @@ const Mine: React.FC<IProps> = (props) => {
   const [message, saveMessage, unreadCount, initMessage] = useMessageStore(
     (s: any) => [s.message, s.saveMessage, s.unreadCount, s.initMessage]
   );
+  const [userName, userID] = useUserStore((s) => [s.userName, s.userID]);
   const init = async () => {
     try {
       await updateFriendList();
@@ -116,20 +118,14 @@ const Mine: React.FC<IProps> = (props) => {
     request.searchUser({ keyword: value }).then(
       (res) => {
         setFindUsers(res.data.list);
-        console.log(res, "usersuccess");
       },
-      (err) => {
-        console.log(err, "usererror");
-      }
+      (err) => {}
     );
     request.searchGroup({ keyword: value }).then(
       (res) => {
         setFindGroups(res.data.list);
-        console.log(res, "groupsuccess");
       },
-      (err) => {
-        console.log(err, "grouperror");
-      }
+      (err) => {}
     );
   };
   return (
@@ -146,20 +142,32 @@ const Mine: React.FC<IProps> = (props) => {
             <button
               onClick={() => {
                 setQuery(!query);
+                setHandle(false);
               }}
             >
               查询
             </button>
+            <div>
+              <button
+                className="mt-3"
+                onClick={() => {
+                  setHandle(!handle);
+                  setQuery(false);
+                }}
+              >
+                处理请求
+              </button>
+            </div>
           </div>
           <div className={styles.chatLeft}>
             <div className="chatList">
               <div className="list-name">好友列表</div>
-              {users.length > 0 &&
-                newData &&
-                newData.map((item: IData) => {
+              {friendList.length > 0 &&
+                friendList &&
+                friendList.map((item: any) => {
                   return (
                     <ChatlistItem
-                      key={item.name}
+                      key={item._id}
                       activeUser={[]}
                       nowUser={selectUser}
                       infoData={item}
@@ -167,13 +175,13 @@ const Mine: React.FC<IProps> = (props) => {
                     />
                   );
                 })}
-              {users.length === 0 && (
+              {friendList.length === 0 && (
                 <div className=" mt-4">您好，您还没有好友</div>
               )}
             </div>
           </div>
           <div className={styles.chatRight}>
-            {!query && <Chatroom id={id} selectUser={selectUser} />}
+            {!query && !handle && <Chatroom id={id} selectUser={selectUser} />}
             {query && (
               <>
                 <Search
@@ -189,21 +197,37 @@ const Mine: React.FC<IProps> = (props) => {
                       <Suspense fallback={<Skeleton />}>
                         {findUsers.length > 0 &&
                           findUsers.map((item: any) => {
+                            if (friendList.indexOf(item._id) !== -1)
+                              return <></>;
                             return (
                               <div
                                 key={item._id}
                                 className="flex items-center justify-between"
                               >
                                 <div>{item.name}</div>
-                                <Button
-                                  type="primary"
-                                  onClick={() => {
-                                    request.addFriend({ friendId: item._id });
-                                    alert("success", "已申请该好友", 2000);
-                                  }}
-                                >
-                                  申请好友
-                                </Button>
+                                {item.name !== userName && (
+                                  <Button
+                                    type="primary"
+                                    onClick={() => {
+                                      request
+                                        .addFriend({ friendId: item._id })
+                                        .then(
+                                          (res) => {
+                                            alert(
+                                              "success",
+                                              "已申请该好友",
+                                              4000
+                                            );
+                                          },
+                                          (err) => {
+                                            alert("warning", err, 4000);
+                                          }
+                                        );
+                                    }}
+                                  >
+                                    申请好友
+                                  </Button>
+                                )}
                               </div>
                             );
                           })}
@@ -215,6 +239,8 @@ const Mine: React.FC<IProps> = (props) => {
                       <Suspense fallback={<Skeleton />}>
                         {findGroups.length > 0 &&
                           findGroups.map((item: any) => {
+                            if (groupList.indexOf(item._id) !== -1)
+                              return <></>;
                             return (
                               <div
                                 key={item._id}
@@ -224,8 +250,20 @@ const Mine: React.FC<IProps> = (props) => {
                                 <Button
                                   type="primary"
                                   onClick={() => {
-                                    request.joinGroup({ groupId: item._id });
-                                    alert("success", "已申请该群组", 2000);
+                                    request
+                                      .joinGroup({ groupId: item._id })
+                                      .then(
+                                        (res) => {
+                                          alert(
+                                            "success",
+                                            "已申请该群组",
+                                            4000
+                                          );
+                                        },
+                                        (err) => {
+                                          alert("warning", err, 4000);
+                                        }
+                                      );
                                   }}
                                 >
                                   申请群组
@@ -238,6 +276,81 @@ const Mine: React.FC<IProps> = (props) => {
                     </div>
                   </>
                 )}
+              </>
+            )}
+            {handle && (
+              <>
+                <div>
+                  <div>好友请求</div>
+                  {waitConfirmFriend.length > 0 &&
+                    waitConfirmFriend.map((item: any) => {
+                      return (
+                        <div
+                          key={item._id}
+                          className="flex items-center justify-between"
+                        >
+                          <div>{item.name}</div>
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              request.agreeFriend({ friendId: item._id }).then(
+                                (res) => {
+                                  alert("success", "已同意该用户申请", 4000);
+                                  updateWaitConfirmFriend();
+                                  updateFriendList();
+                                },
+                                (err) => {
+                                  alert("warning", err, 4000);
+                                }
+                              );
+                            }}
+                          >
+                            同意申请
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  {waitConfirmFriend.length === 0 && (
+                    <div className="mt-3">无好友请求</div>
+                  )}
+                  <div className="mt-3">群组请求</div>
+                  {waitConfirmGroup.length > 0 &&
+                    waitConfirmGroup.map((item: any) => {
+                      return (
+                        <div
+                          key={item._id}
+                          className="flex items-center justify-between"
+                        >
+                          <div>{item.name}</div>
+                          <Button
+                            type="primary"
+                            onClick={() => {
+                              request
+                                .agreeGroup({
+                                  groupId: item._id,
+                                  userId: userID,
+                                })
+                                .then(
+                                  (res) => {
+                                    alert("success", "已同意该群组申请", 4000);
+                                    updateWaitConfirmGroup();
+                                    updateGroupList();
+                                  },
+                                  (err) => {
+                                    alert("warning", err, 4000);
+                                  }
+                                );
+                            }}
+                          >
+                            同意申请
+                          </Button>
+                        </div>
+                      );
+                    })}
+                  {waitConfirmGroup.length === 0 && (
+                    <div className="mt-3">无群组请求</div>
+                  )}
+                </div>
               </>
             )}
           </div>

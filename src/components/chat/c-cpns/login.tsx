@@ -14,9 +14,10 @@ const Login: React.FC<IProps> = () => {
   const [email, setEmail] = useState("");
   const [openApp, closeApp] = useAppsStore((s) => [s.openApp, s.closeApp]);
   const Alert = useAlertStore((s) => s.useAlert);
-  const [userName, setUserName] = useUserStore((s) => [
+  const [userName, setUserName, setUserID] = useUserStore((s) => [
     s.userName,
     s.setUserName,
+    s.setUserID,
   ]);
   const handleLogin = async (isRegister: boolean) => {
     try {
@@ -29,6 +30,7 @@ const Login: React.FC<IProps> = () => {
         if (res.status === 200) {
           localStorage.setItem("user", JSON.stringify(data));
           setUserName(data.name);
+          setUserID(data._id);
           localStorage.setItem("token", data.token);
           Alert("success", res.msg);
           closeApp("login");

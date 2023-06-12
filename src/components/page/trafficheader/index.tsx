@@ -21,6 +21,8 @@ const TrafficHeader: React.FC<IProps> = (props) => {
   const closeHandler = () => {
     closeApp(id);
     if (max) setMax("");
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
   useEffect(() => {
     const trafficLight = trafficLightRef.current;

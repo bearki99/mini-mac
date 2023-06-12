@@ -21,6 +21,7 @@ const useChatStore = create((set) => ({
   updateWaitConfirmFriend: async () => {
     try {
       const res = await request.getWaitConfirmFriend();
+      console.log(res, 'update wait');
       set({ waitConfirmFriend: res.data! });
     } catch (error) {}
   },
