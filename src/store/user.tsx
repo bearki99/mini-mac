@@ -1,27 +1,17 @@
+
 import { create } from "zustand";
 
-interface UserInfo {
-  id: string;
-  avatar: string;
-  role: string;
-  username: string;
-  createAt?: any;
-}
-
 interface useUserStates {
-  userInfo: UserInfo;
-  setUserInfo: (v: any) => void;
+  userID: string;
+  userName: string;
+  setUserName: (v: string) => void;
 }
 const useUserStore = create<useUserStates>((set) => ({
-  userInfo: {
-    id: "",
-    username: "",
-    avatar: "",
-    role: "",
-  },
-  setUserInfo: (v: any) =>
-    set((s) => ({
-      userInfo: { ...s.userInfo, ...v },
+  userID: "",
+  userName: "",
+  setUserName: (v: string) =>
+    set((_) => ({
+      userName: v,
     })),
 }));
 

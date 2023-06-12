@@ -1,4 +1,4 @@
-import { useAlertStore, useAppsStore } from "@/store";
+import { useAlertStore, useAppsStore, useUserStore } from "@/store";
 import React, { ReactNode, useState } from "react";
 import { memo } from "react";
 import request from "@/http/index";
@@ -14,6 +14,10 @@ const Login: React.FC<IProps> = () => {
   const [email, setEmail] = useState("");
   const [openApp, closeApp] = useAppsStore((s) => [s.openApp, s.closeApp]);
   const Alert = useAlertStore((s) => s.useAlert);
+  const [userName, setUserName] = useUserStore((s) => [
+    s.userName,
+    s.setUserName,
+  ]);
   const handleLogin = async (isRegister: boolean) => {
     try {
       // 登录逻辑
@@ -24,10 +28,13 @@ const Login: React.FC<IProps> = () => {
         const data = res.data as any;
         if (res.status === 200) {
           localStorage.setItem("user", JSON.stringify(data));
+          setUserName(data.name);
           localStorage.setItem("token", data.token);
           Alert("success", res.msg);
           closeApp("login");
           openApp("chat");
+        } else {
+          setUserName("");
         }
       } else {
         // 进行注册

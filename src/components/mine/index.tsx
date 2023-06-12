@@ -6,7 +6,7 @@ import styles from "./index.module.css";
 import myData from "@/assets/data/chat-data.json";
 import request from "@/http/index";
 import { Button, Input, Skeleton } from "antd";
-import { useChatStore } from "@/store";
+import { useAlertStore, useChatStore } from "@/store";
 import MyServer from "@/socket";
 import useMessageStore from "@/store/message";
 const { socket } = MyServer.getInstance();
@@ -105,6 +105,7 @@ const Mine: React.FC<IProps> = (props) => {
       }
     });
   };
+  const [alert] = useAlertStore((s) => [s.useAlert]);
   useEffect(() => {
     // 获取好友列表
     init();
@@ -194,7 +195,15 @@ const Mine: React.FC<IProps> = (props) => {
                                 className="flex items-center justify-between"
                               >
                                 <div>{item.name}</div>
-                                <Button type="primary">申请好友</Button>
+                                <Button
+                                  type="primary"
+                                  onClick={() => {
+                                    request.addFriend({ friendId: item._id });
+                                    alert("success", "已申请该好友", 2000);
+                                  }}
+                                >
+                                  申请好友
+                                </Button>
                               </div>
                             );
                           })}
@@ -212,7 +221,15 @@ const Mine: React.FC<IProps> = (props) => {
                                 className="flex items-center justify-between"
                               >
                                 <div>{item.name}</div>
-                                <Button type="primary">申请群组</Button>
+                                <Button
+                                  type="primary"
+                                  onClick={() => {
+                                    request.joinGroup({ groupId: item._id });
+                                    alert("success", "已申请该群组", 2000);
+                                  }}
+                                >
+                                  申请群组
+                                </Button>
                               </div>
                             );
                           })}
