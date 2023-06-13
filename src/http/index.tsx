@@ -1,4 +1,3 @@
-
 import { io, Socket } from "socket.io-client";
 import myAxios from "./myAxios";
 import MyServer from "@/socket";
@@ -163,6 +162,7 @@ export default {
     })) as any;
     return res;
   },
+  //发送消息，data参数：{targetId: _id, targetType: number}
   async sendMessage(data: any): Promise<any> {
     const res = (await myAxios({
       method: "put",
@@ -171,9 +171,7 @@ export default {
     })) as any;
     return res;
   },
-  async getMessage(
-    data: any
-  ): Promise<any> {
+  async getMessage(data: any): Promise<any> {
     const res = (await myAxios({
       method: "post",
       url: "message",

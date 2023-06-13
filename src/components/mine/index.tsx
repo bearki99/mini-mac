@@ -24,7 +24,8 @@ const Mine: React.FC<IProps> = (props) => {
   const [users, setUsers] = useState([]);
   const [id, changeID] = useState(0);
   const [first, setFirst] = useState(true);
-  const [selectUser, setselectUser] = useState("");
+  const [selectName, setSelectName] = useState('');
+  const [selectID, setSelectID] = useState('');
   const [query, setQuery] = useState(false);
   const [findUsers, setFindUsers] = useState([]);
   const [findGroups, setFindGroups] = useState([]);
@@ -169,9 +170,10 @@ const Mine: React.FC<IProps> = (props) => {
                     <ChatlistItem
                       key={item._id}
                       activeUser={[]}
-                      nowUser={selectUser}
+                      nowUser={selectName}
                       infoData={item}
-                      handleMyClick={setselectUser}
+                      setselectName={setSelectName}
+                      setselectID={setSelectID}
                     />
                   );
                 })}
@@ -181,7 +183,7 @@ const Mine: React.FC<IProps> = (props) => {
             </div>
           </div>
           <div className={styles.chatRight}>
-            {!query && !handle && <Chatroom id={id} selectUser={selectUser} />}
+            {!query && !handle && <Chatroom key={selectID} id={selectID} targetType={0} selectUser={selectName} />}
             {query && (
               <>
                 <Search

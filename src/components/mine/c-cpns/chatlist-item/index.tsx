@@ -6,26 +6,28 @@ interface IProps {
   children?: ReactNode;
   infoData?: any;
   activeUser: any[];
-  handleMyClick?: any;
-  nowUser?: string;
+  setselectName: any;
+  setselectID: any;
+  nowUser: any;
 }
 
 const ChatItem: React.FC<IProps> = (props) => {
-  const { activeUser, infoData, handleMyClick, nowUser } = props;
-  const { name, des } = infoData;
-  const handleClick = function (name: string) {
-    handleMyClick(name);
+  const { activeUser, infoData,  setselectID, setselectName, nowUser } = props;
+  const { name, des, _id } = infoData;
+  const handleClick = function () {
+    setselectID(_id);
+    setselectName(name);
   };
   const newActiveUser = activeUser.map((item) => item.username);
 
-  const isActive = newActiveUser.indexOf(name) !== -1;
+  // const isActive = newActiveUser.indexOf(name) !== -1;
   return (
     <>
       <div
         className={classNames([styles.info], {
           [styles.activeCard]: name === nowUser,
         })}
-        onClick={() => handleClick(name)}
+        onClick={() => handleClick()}
       >
         <div className={styles.left}>
           <div className={styles.icon}>
