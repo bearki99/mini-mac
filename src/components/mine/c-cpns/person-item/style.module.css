@@ -3,7 +3,7 @@
   width: 100%;
 }
 
-.left-content {
+.leftContent {
   float: left;
   .des {
     float: left;
@@ -17,7 +17,7 @@
     background-color: rgb(26, 27, 34);
   }
 }
-.right-content {
+.rightContent {
   float: right;
   .des {
     float: right;
@@ -34,7 +34,7 @@
 .des {
   margin-bottom: 7px;
 }
-.main-detail {
+.mainDetail {
   display: flex;
   align-items: center;
   .name {
@@ -47,7 +47,7 @@
 }
 .top {
   position: relative;
-  .my-img {
+  .myImg {
     display: flex;
     text-align: center;
     justify-content: center;

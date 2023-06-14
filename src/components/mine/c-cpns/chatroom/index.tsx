@@ -99,6 +99,7 @@ const ChatRoom: React.FC<IProps> = (props) => {
         limit: 10,
       });
       setMessages(list);
+      console.log(list);
       return list;
     } catch (error) {}
   };
@@ -122,6 +123,8 @@ const ChatRoom: React.FC<IProps> = (props) => {
         message,
         messageType: 1,
       });
+      setMessages([...messages, data]);
+      console.log(data);
     }
   }
   // const warning = () => {
@@ -178,9 +181,10 @@ const ChatRoom: React.FC<IProps> = (props) => {
               messages.map((item: any) => {
                 return (
                   <PersonItem
-                    key={item.realTime}
+                    key={item.time}
                     infoData={item}
-                    type={item.type}
+                    type={item.messageType}
+                    receiverId={id as string}
                   />
                 );
               })}

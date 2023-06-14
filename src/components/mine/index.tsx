@@ -24,8 +24,8 @@ const Mine: React.FC<IProps> = (props) => {
   const [users, setUsers] = useState([]);
   const [id, changeID] = useState(0);
   const [first, setFirst] = useState(true);
-  const [selectName, setSelectName] = useState('');
-  const [selectID, setSelectID] = useState('');
+  const [selectName, setSelectName] = useState("");
+  const [selectID, setSelectID] = useState("");
   const [query, setQuery] = useState(false);
   const [findUsers, setFindUsers] = useState([]);
   const [findGroups, setFindGroups] = useState([]);
@@ -144,6 +144,8 @@ const Mine: React.FC<IProps> = (props) => {
               onClick={() => {
                 setQuery(!query);
                 setHandle(false);
+                setSelectName("");
+                setSelectID("");
               }}
             >
               查询
@@ -154,6 +156,8 @@ const Mine: React.FC<IProps> = (props) => {
                 onClick={() => {
                   setHandle(!handle);
                   setQuery(false);
+                  setSelectName("");
+                  setSelectID("");
                 }}
               >
                 处理请求
@@ -161,7 +165,13 @@ const Mine: React.FC<IProps> = (props) => {
             </div>
           </div>
           <div className={styles.chatLeft}>
-            <div className="chatList">
+            <div
+              className="chatList"
+              onClick={() => {
+                setQuery(false);
+                setHandle(false);
+              }}
+            >
               <div className="list-name">好友列表</div>
               {friendList.length > 0 &&
                 friendList &&
@@ -183,7 +193,14 @@ const Mine: React.FC<IProps> = (props) => {
             </div>
           </div>
           <div className={styles.chatRight}>
-            {!query && !handle && <Chatroom key={selectID} id={selectID} targetType={0} selectUser={selectName} />}
+            {!query && !handle && (
+              <Chatroom
+                key={selectID}
+                id={selectID}
+                targetType={0}
+                selectUser={selectName}
+              />
+            )}
             {query && (
               <>
                 <Search

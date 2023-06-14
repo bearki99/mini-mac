@@ -43,6 +43,7 @@
 .mainContent {
   width: 100%;
   min-height: 500px;
+  max-height: 500px;
   box-sizing: border-box;
   padding: 10px 20px;
   margin-bottom: 10px;

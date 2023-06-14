@@ -3,35 +3,40 @@ import { memo } from "react";
 import { Avatar } from "antd";
 import classNames from "classnames";
 
-import styles from './style.module.css'
+import styles from "./style.module.css";
 interface IProps {
   children?: ReactNode;
   infoData?: any;
   type: number;
+  receiverId: string;
 }
 
 const PersonItem: React.FC<IProps> = (props) => {
-  const { infoData, type } = props;
-  const { text, name, time } = infoData;
+  const { infoData, type, receiverId } = props;
+  const { text, name, time, message, userId
+  } = infoData;
+  console.log(receiverId, infoData);
   const loginName = localStorage.getItem("username");
   return (
     <div className={styles.clearfix}>
       <div
         className={classNames({
-          [styles.leftContent]: loginName !== name,
-          [styles.rightContent]: loginName === name,
+          [styles.leftContent]: userId === receiverId,
+          [styles.rightContent]: userId !== receiverId,
         })}
       >
-        <div className={classNames({
-          [styles.top]: true,
-          [styles.clearfix]: true,
-        })}>
-          {type === 0 && <div className={styles.des}>{text}</div>}
-          {type === 1 && (
+        <div
+          className={classNames({
+            [styles.top]: true,
+            [styles.clearfix]: true,
+          })}
+        >
+          {<div className={styles.des}>{message}</div>}
+          {/* {type === 1 && (
             <div className={styles.myImg}>
               <img src={text}></img>
             </div>
-          )}
+          )} */}
         </div>
 
         <div className={styles.myDetail}>
