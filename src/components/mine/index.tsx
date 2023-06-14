@@ -30,9 +30,7 @@ const Mine: React.FC<IProps> = (props) => {
   const [findUsers, setFindUsers] = useState([]);
   const [findGroups, setFindGroups] = useState([]);
   const [handle, setHandle] = useState(false);
-  const newData = myData.filter(
-    (item: IData) => item.name !== localStorage.getItem("username")
-  );
+  const [unread, setUnread] = useState({});
   const [
     friendList,
     groupList,
@@ -60,7 +58,6 @@ const Mine: React.FC<IProps> = (props) => {
       s.initMessage,
       s.newSave,
     ]);
-  console.log(message);
   const [userName, userID] = useUserStore((s) => [s.userName, s.userID]);
   const init = async () => {
     try {
@@ -116,32 +113,21 @@ const Mine: React.FC<IProps> = (props) => {
   };
   const [alert] = useAlertStore((s) => [s.useAlert]);
 
-  const BubbleHandle = (
-    target: HTMLButtonElement | null
-  ): HTMLButtonElement | null => {
-    if (target?.className === "content") {
-      return null;
-    } else if (target?.className !== "item") {
-      return BubbleHandle(target?.parentNode as HTMLButtonElement);
-    }
-    return target;
-  };
-
-  const contentHandle = (e: Event) => {
-    const target = BubbleHandle(e.target as HTMLButtonElement);
-    // if (target?.className === "item") {
-    //   message.id = target.dataset.id;
-    //   message.type = target.dataset.type;
-    //   message.messageList.some((item: any, index: number) => {
-    //     if (item._id === message.id) {
-    //       item.unreadCount = 0;
-    //       message.messageList.unshift(message.messageList.splice(index, 1)[0]);
-    //       return true;
-    //     }
-    //   });
-    // }
-    // saveMessage();
-  };
+  // const contentHandle = (e: Event) => {
+  //   const target = e.target as HTMLButtonElement;
+  //   if (target?.className === "item") {
+  //     message.id = target.dataset.id;
+  //     message.type = target.dataset.type;
+  //     message.messageList.some((item: any, index: number) => {
+  //       if (item._id === message.id) {
+  //         item.unreadCount = 0;
+  //         message.messageList.unshift(message.messageList.splice(index, 1)[0]);
+  //         return true;
+  //       }
+  //     });
+  //   }
+  //   saveMessage();
+  // };
   useEffect(() => {
     // 获取好友列表
     init();
@@ -213,8 +199,6 @@ const Mine: React.FC<IProps> = (props) => {
                 friendList.map((item: any) => {
                   return (
                     <ChatlistItem
-                      data-id={item._id}
-                      data-type={item.type}
                       key={item._id}
                       activeUser={[]}
                       nowUser={selectName}
