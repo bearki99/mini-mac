@@ -52,9 +52,15 @@ const Mine: React.FC<IProps> = (props) => {
     s.updateWaitConfirmFriend,
     s.updateWaitConfirmGroup,
   ]);
-  const [message, saveMessage, unreadCount, initMessage] = useMessageStore(
-    (s: any) => [s.message, s.saveMessage, s.unreadCount, s.initMessage]
-  );
+  const [message, saveMessage, unreadCount, initMessage, newSave] =
+    useMessageStore((s: any) => [
+      s.message,
+      s.saveMessage,
+      s.unreadCount,
+      s.initMessage,
+      s.newSave,
+    ]);
+  console.log(message);
   const [userName, userID] = useUserStore((s) => [s.userName, s.userID]);
   const init = async () => {
     try {
@@ -109,12 +115,40 @@ const Mine: React.FC<IProps> = (props) => {
     });
   };
   const [alert] = useAlertStore((s) => [s.useAlert]);
+
+  const BubbleHandle = (
+    target: HTMLButtonElement | null
+  ): HTMLButtonElement | null => {
+    if (target?.className === "content") {
+      return null;
+    } else if (target?.className !== "item") {
+      return BubbleHandle(target?.parentNode as HTMLButtonElement);
+    }
+    return target;
+  };
+
+  const contentHandle = (e: Event) => {
+    const target = BubbleHandle(e.target as HTMLButtonElement);
+    // if (target?.className === "item") {
+    //   message.id = target.dataset.id;
+    //   message.type = target.dataset.type;
+    //   message.messageList.some((item: any, index: number) => {
+    //     if (item._id === message.id) {
+    //       item.unreadCount = 0;
+    //       message.messageList.unshift(message.messageList.splice(index, 1)[0]);
+    //       return true;
+    //     }
+    //   });
+    // }
+    // saveMessage();
+  };
   useEffect(() => {
     // 获取好友列表
     init();
     initSocketEvent();
     initMessage();
   }, []);
+
   const onSearch = async (value: string) => {
     setFirst(false);
     request.searchUser({ keyword: value }).then(
@@ -168,7 +202,7 @@ const Mine: React.FC<IProps> = (props) => {
           <div className={styles.chatLeft}>
             <div
               className="chatList"
-              onClick={() => {
+              onClick={(e: any) => {
                 setQuery(false);
                 setHandle(false);
               }}
@@ -179,12 +213,15 @@ const Mine: React.FC<IProps> = (props) => {
                 friendList.map((item: any) => {
                   return (
                     <ChatlistItem
+                      data-id={item._id}
+                      data-type={item.type}
                       key={item._id}
                       activeUser={[]}
                       nowUser={selectName}
                       infoData={item}
                       setselectName={setSelectName}
                       setselectID={setSelectID}
+                      unRead={0}
                     />
                   );
                 })}

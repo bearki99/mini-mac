@@ -83,6 +83,7 @@ const ChatRoom: React.FC<IProps> = (props) => {
   const [message, saveMessage, unreadCount, initMessage] = useMessageStore(
     (s: any) => [s.message, s.saveMessage, s.unreadCount, s.initMessage]
   );
+
   const initSocketEvent = () => {
     socket.on("receiveLiveMessage", async (data: any) => {
       if (data.targetType !== targetType) return;
@@ -90,7 +91,6 @@ const ChatRoom: React.FC<IProps> = (props) => {
       if (data.targetType === 0 && data.user.name !== selectUser) return;
       if (data.targetType === 1 && data.targetId !== id) return;
       setMessages([...messages, data]);
-      // pushMessage(data, scrollKeepToBottom);
     });
   };
 

@@ -44,6 +44,9 @@ const useMessageStore = create((set, get) => ({
     }
     set({ message: defaultMessage });
   },
+  newSave: (obj: any) => {
+    set({ message: obj });
+  },
 }));
 
 const defaultMessage = {

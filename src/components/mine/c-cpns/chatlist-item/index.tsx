@@ -9,10 +9,11 @@ interface IProps {
   setselectName: any;
   setselectID: any;
   nowUser: any;
+  unRead: number;
 }
 
 const ChatItem: React.FC<IProps> = (props) => {
-  const { activeUser, infoData,  setselectID, setselectName, nowUser } = props;
+  const { activeUser, infoData,  setselectID, setselectName, nowUser, unRead } = props;
   const { name, des, _id } = infoData;
   const handleClick = function () {
     setselectID(_id);
@@ -26,6 +27,7 @@ const ChatItem: React.FC<IProps> = (props) => {
       <div
         className={classNames([styles.info], {
           [styles.activeCard]: name === nowUser,
+          "item": true
         })}
         onClick={() => handleClick()}
       >
@@ -40,6 +42,7 @@ const ChatItem: React.FC<IProps> = (props) => {
         <div className={styles.right}>
           <div className={styles.name}>{name}</div>
           <div className={styles.des}>{des}</div>
+          <div>{unRead}</div>
         </div>
       </div>
     </>
