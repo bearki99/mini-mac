@@ -15,7 +15,6 @@ const PersonItem: React.FC<IProps> = (props) => {
   const { infoData, type, receiverId } = props;
   const { text, name, time, message, userId
   } = infoData;
-  console.log(receiverId, infoData);
   const loginName = localStorage.getItem("username");
   return (
     <div className={styles.clearfix}>

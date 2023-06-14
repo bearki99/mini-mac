@@ -76,15 +76,20 @@ const ChatRoom: React.FC<IProps> = (props) => {
   const handleTransmit = () => {
     myRef.current?.click();
   };
+  const clearSocketEvent = () => {
+    socket.removeListener("receiveLiveMessage");
+  };
+
   const [message, saveMessage, unreadCount, initMessage] = useMessageStore(
     (s: any) => [s.message, s.saveMessage, s.unreadCount, s.initMessage]
   );
   const initSocketEvent = () => {
     socket.on("receiveLiveMessage", async (data: any) => {
       if (data.targetType !== targetType) return;
-      if (data.userId === id) return;
-      if (data.targetType === 0 && data.targetId !== id) return;
+      if (data.targetId === id) return;
+      if (data.targetType === 0 && data.user.name !== selectUser) return;
       if (data.targetType === 1 && data.targetId !== id) return;
+      setMessages([...messages, data]);
       // pushMessage(data, scrollKeepToBottom);
     });
   };
@@ -98,14 +103,13 @@ const ChatRoom: React.FC<IProps> = (props) => {
         targetType,
         limit: 10,
       });
-      setMessages(list);
-      console.log(list);
+      setMessages(list.reverse());
       return list;
     } catch (error) {}
   };
   useEffect(() => {
     smoothScrollToBottom();
-  }, [socket, messages]);
+  }, [socket, messages, messages.length]);
   useEffect(() => {
     initSocketEvent();
     getMessage();
@@ -124,7 +128,6 @@ const ChatRoom: React.FC<IProps> = (props) => {
         messageType: 1,
       });
       setMessages([...messages, data]);
-      console.log(data);
     }
   }
   // const warning = () => {

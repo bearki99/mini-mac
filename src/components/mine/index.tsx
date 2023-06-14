@@ -113,6 +113,7 @@ const Mine: React.FC<IProps> = (props) => {
     // 获取好友列表
     init();
     initSocketEvent();
+    initMessage();
   }, []);
   const onSearch = async (value: string) => {
     setFirst(false);
