@@ -15,7 +15,7 @@ const useMessageStore = create((set, get) => ({
   unreadCount: () => {
     let count: number = 0;
     (get() as any).message.messageList.forEach((item: any) => {
-      count += item.unreadCount;
+      // count += item.unreadCount;
     });
     return count;
   },
@@ -36,16 +36,21 @@ const useMessageStore = create((set, get) => ({
             messageList: messageList || [],
             inChatRoom: false,
           },
-        });
+        }, true);
       } catch (error) {
-        set({ message: defaultMessage });
+        set({ message: defaultMessage }, true);
       }
       return;
     }
-    set({ message: defaultMessage });
+    set({ message: defaultMessage }, true);
   },
   newSave: (obj: any) => {
-    set({ message: obj });
+    set({
+      message: {
+        messageList: obj,
+        inChatRoom: false,
+      },
+    }, true);
   },
 }));
 

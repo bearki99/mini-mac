@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useState, useEffect } from "react";
 import { memo } from "react";
 import styles from "./index.module.css";
 import classNames from "classnames";
@@ -10,12 +10,10 @@ interface IProps {
   setselectName: any;
   setselectID: any;
   nowUser: any;
-  unRead: number;
 }
 
 const ChatItem: React.FC<IProps> = (props) => {
-  const { activeUser, infoData, setselectID, setselectName, nowUser, unRead } =
-    props;
+  const { activeUser, infoData, setselectID, setselectName, nowUser } = props;
   const [message, saveMessage, unreadCount, initMessage, newSave] =
     useMessageStore((s: any) => [
       s.message,
@@ -25,12 +23,20 @@ const ChatItem: React.FC<IProps> = (props) => {
       s.newSave,
     ]);
   const { name, des, _id } = infoData;
+  const [num, setNum] = useState(0);
+
   const handleClick = function (e: Event) {
     setselectID(_id);
     setselectName(name);
     const target = e.target as any;
   };
-  // const isActive = newActiveUser.indexOf(name) !== -1;
+  useEffect(() => {
+    for (let i = 0; i < message.messageList.length; i++) {
+      if (message.messageList[i]._id === _id) {
+        setNum(message.messageList[i].unreadCount);
+      }
+    }
+  }, [message.messageList]);
   return (
     <>
       <div
@@ -50,7 +56,7 @@ const ChatItem: React.FC<IProps> = (props) => {
         <div className={styles.right}>
           <div className={styles.name}>{name}</div>
           <div className={styles.des}>{des}</div>
-          <div>{unRead}</div>
+          <div>{num}</div>
         </div>
       </div>
     </>

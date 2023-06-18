@@ -79,26 +79,32 @@ const Mine: React.FC<IProps> = (props) => {
       const user = JSON.parse(localStorage.getItem("user") || "");
       if (data.userId === user._id) return;
       if (data.targetType === 0 && data.targetId !== user._id) return;
-      const flag = message.messageList.some((item: any) => {
-        const targetType = item.type === "user" ? 0 : 1;
-        const targetId = item.type === "user" ? data.userId : data.targetId;
-        if (item._id === targetId && targetType === data.targetType) {
-          item.unreadCount += 1;
-          item.lastMessage = data;
-          saveMessage();
-          return true;
-        }
-        return false;
-      });
+      const flag =
+        message.messageList > 0 &&
+        message.messageList.some((item: any) => {
+          const targetType = item.type === "user" ? 0 : 1;
+          const targetId = item.type === "user" ? data.userId : data.targetId;
+          if (
+            item._id === targetId &&
+            targetType === data.targetType
+            // item._id !== selectID
+          ) {
+            // item.unreadCount += 1;
+            item.lastMessage = data;
+            newSave(message.messageList);
+            return true;
+          }
+          return false;
+        });
       if (!flag && data.userId !== undefined && data.targetId !== undefined) {
         const _id = data.targetType === 0 ? data.userId : data.targetId;
         const type = data.targetType === 0 ? "user" : "group";
         message.messageList.push({
           _id,
           type,
-          unreadCount: 1,
+          unreadCount: 0,
         });
-        saveMessage();
+        newSave(message.messageList);
         if (message.inChatRoom) return;
         initMessage();
       }
@@ -110,31 +116,44 @@ const Mine: React.FC<IProps> = (props) => {
         updateWaitConfirmGroup();
       }
     });
+    return () => {
+      socket.removeListener("receiveMessage");
+      socket.removeListener("receiveApply");
+    };
   };
   const [alert] = useAlertStore((s) => [s.useAlert]);
 
-  // const contentHandle = (e: Event) => {
-  //   const target = e.target as HTMLButtonElement;
-  //   if (target?.className === "item") {
-  //     message.id = target.dataset.id;
-  //     message.type = target.dataset.type;
-  //     message.messageList.some((item: any, index: number) => {
-  //       if (item._id === message.id) {
-  //         item.unreadCount = 0;
-  //         message.messageList.unshift(message.messageList.splice(index, 1)[0]);
-  //         return true;
-  //       }
-  //     });
-  //   }
-  //   saveMessage();
-  // };
   useEffect(() => {
     // 获取好友列表
     init();
     initSocketEvent();
     initMessage();
   }, []);
-
+  useEffect(() => {
+    message.messageList.some((item: any) => {
+      if (item._id === selectID) {
+        item.unreadCount = 0;
+        newSave(message.messageList);
+      }
+    });
+  }, [selectID]);
+  useEffect(() => {
+    socket.on("receiveMessage", async (data) => {
+      message.messageList.length > 0 &&
+        message.messageList.some((item: any) => {
+          const targetId = item.type === "user" ? data.userId : data.targetId;
+          if (item._id === targetId && item._id !== selectID) {
+            item.unreadCount += 1;
+            item.lastMessage = data;
+            newSave(message.messageList);
+            console.log(message.messageList);
+          }
+        });
+    });
+    return () => {
+      socket.removeListener("receiveMessage");
+    };
+  }, [socket]);
   const onSearch = async (value: string) => {
     setFirst(false);
     request.searchUser({ keyword: value }).then(
@@ -205,7 +224,6 @@ const Mine: React.FC<IProps> = (props) => {
                       infoData={item}
                       setselectName={setSelectName}
                       setselectID={setSelectID}
-                      unRead={0}
                     />
                   );
                 })}
