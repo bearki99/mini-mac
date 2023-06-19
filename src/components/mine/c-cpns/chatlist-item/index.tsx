@@ -29,14 +29,16 @@ const ChatItem: React.FC<IProps> = (props) => {
     setselectID(_id);
     setselectName(name);
     const target = e.target as any;
+    setNum(0);
   };
   useEffect(() => {
     for (let i = 0; i < message.messageList.length; i++) {
       if (message.messageList[i]._id === _id) {
         setNum(message.messageList[i].unreadCount);
+        break;
       }
     }
-  }, [message.messageList]);
+  }, [message.messageList, message, message.messageList.length]);
   return (
     <>
       <div

@@ -58,6 +58,7 @@ const Mine: React.FC<IProps> = (props) => {
       s.initMessage,
       s.newSave,
     ]);
+  console.log(message);
   const [userName, userID] = useUserStore((s) => [s.userName, s.userID]);
   const init = async () => {
     try {
@@ -91,11 +92,12 @@ const Mine: React.FC<IProps> = (props) => {
           ) {
             // item.unreadCount += 1;
             item.lastMessage = data;
-            newSave(message.messageList);
+            newSave(message);
             return true;
           }
           return false;
         });
+      console.log(flag);
       if (!flag && data.userId !== undefined && data.targetId !== undefined) {
         const _id = data.targetType === 0 ? data.userId : data.targetId;
         const type = data.targetType === 0 ? "user" : "group";
@@ -104,9 +106,9 @@ const Mine: React.FC<IProps> = (props) => {
           type,
           unreadCount: 0,
         });
-        newSave(message.messageList);
+        newSave(message);
         if (message.inChatRoom) return;
-        initMessage();
+        // initMessage();
       }
     });
     socket.on("receiveApply", async (data) => {
@@ -133,20 +135,20 @@ const Mine: React.FC<IProps> = (props) => {
     message.messageList.some((item: any) => {
       if (item._id === selectID) {
         item.unreadCount = 0;
-        newSave(message.messageList);
+        newSave(message);
       }
     });
   }, [selectID]);
   useEffect(() => {
     socket.on("receiveMessage", async (data) => {
-      message.messageList.length > 0 &&
+      data.userId !== selectID &&
+        message.messageList.length > 0 &&
         message.messageList.some((item: any) => {
           const targetId = item.type === "user" ? data.userId : data.targetId;
           if (item._id === targetId && item._id !== selectID) {
             item.unreadCount += 1;
             item.lastMessage = data;
-            newSave(message.messageList);
-            console.log(message.messageList);
+            newSave(message);
           }
         });
     });

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import request from "@/http/index";
-
+import * as R from "ramda";
 const useMessageStore = create((set, get) => ({
   message: {
     messageList: [],
@@ -15,7 +15,7 @@ const useMessageStore = create((set, get) => ({
   unreadCount: () => {
     let count: number = 0;
     (get() as any).message.messageList.forEach((item: any) => {
-      // count += item.unreadCount;
+      count += item.unreadCount;
     });
     return count;
   },
@@ -36,22 +36,21 @@ const useMessageStore = create((set, get) => ({
             messageList: messageList || [],
             inChatRoom: false,
           },
-        }, true);
+        });
       } catch (error) {
-        set({ message: defaultMessage }, true);
+        set({ message: defaultMessage });
       }
       return;
     }
-    set({ message: defaultMessage }, true);
+    set({ message: defaultMessage });
   },
-  newSave: (obj: any) => {
-    set({
-      message: {
-        messageList: obj,
-        inChatRoom: false,
-      },
-    }, true);
-  },
+  newSave: (obj: any) => set(R.over(R.lensPath(["message"]), (c) => obj)),
+  // set(
+  //   () => ({
+  //     message: obj,
+  //   }),
+  //   true
+  // );,
 }));
 
 const defaultMessage = {
