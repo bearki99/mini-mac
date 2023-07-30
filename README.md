@@ -43,5 +43,5 @@ ChatGPT
 
 VSCode
 
-- 借助[github1s](https://github.com/conwnet/github1s) 在线查看[源代码](https://github.com/ljq0226/turbomac)
+- 借助[github1s](https://github.com/conwnet/github1s) 在线查看代码
 
